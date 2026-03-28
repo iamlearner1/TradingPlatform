@@ -2,40 +2,40 @@ import { ChevronDown, Bell, Search, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 // Category Icons
-const StocksIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2V17zm4 0h-2V7h2V17zm4 0h-2v-4h2V17z"/></svg>;
-const IPOIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>;
-const MutualFundsIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>;
-const ETFIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>;
-const IndicesIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>;
-const GlobalFuturesIcon = () => <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>;
+const StocksIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2V17zm4 0h-2V7h2V17zm4 0h-2v-4h2V17z"/></svg>;
+const IPOIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>;
+const MutualFundsIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>;
+const ETFIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>;
+const IndicesIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>;
+const GlobalFuturesIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>;
 
 const CategoryCard = ({ icon: Icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="flex flex-col items-center gap-2 p-3">
-    <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-primary">
+  <div className="flex flex-col items-center gap-2 p-1.5">
+    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100/50">
       {Icon}
     </div>
-    <p className="text-xs font-medium text-center text-gray-800 leading-tight">{label}</p>
+    <p className="text-[11px] font-bold text-center text-gray-800 leading-tight">{label}</p>
   </div>
 );
 
 const NewsCard = ({ date, title, description }: { date: string; title: string; description: string }) => (
-  <div className="bg-white p-4 border-b border-gray-100">
-    <p className="text-xs text-gray-500 mb-2">{date}</p>
-    <h4 className="text-sm font-semibold text-gray-900 mb-2">{title}</h4>
-    <p className="text-xs text-gray-600 leading-relaxed">{description}</p>
+  <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
+    <p className="text-[10px] font-bold tracking-wider uppercase text-indigo-500 mb-1.5">{date}</p>
+    <h4 className="text-sm font-bold text-gray-900 mb-2 line-clamp-3 leading-snug">{title}</h4>
+    <p className="text-xs text-gray-500 leading-relaxed line-clamp-3 mt-auto">{description}</p>
   </div>
 );
 
 const ResultCard = ({ symbol, change, title, description }: { symbol: string; change: string; title: string; description: string }) => (
-  <div className="bg-white p-4 border-b border-gray-100">
+  <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
     <div className="flex justify-between items-start mb-2">
       <div>
-        <p className="text-sm font-bold text-gray-900">{symbol}</p>
-        <p className={`text-xs font-semibold ${change.includes('-') ? 'text-red-600' : 'text-green-600'}`}>{change}</p>
+        <p className="text-sm font-black text-gray-900">{symbol}</p>
+        <p className={`text-xs font-bold mt-0.5 ${change.includes('-') ? 'text-red-500' : 'text-green-500'}`}>{change}</p>
       </div>
     </div>
-    <h4 className="text-sm font-semibold text-gray-900 mb-2">{title}</h4>
-    <p className="text-xs text-gray-600 leading-relaxed">{description}</p>
+    <h4 className="text-xs font-bold text-gray-800 mb-2 line-clamp-2 leading-snug">{title}</h4>
+    <p className="text-[11px] text-gray-500 leading-relaxed line-clamp-2 mt-auto">{description}</p>
   </div>
 );
 
@@ -98,17 +98,12 @@ export default function Index() {
 
   const toggleIndex = (indexId: string) => {
     if (selectedIndices.includes(indexId)) {
-      if (selectedIndices.length > 1) {
-        setSelectedIndices(selectedIndices.filter(id => id !== indexId));
-      }
-    } else {
-      if (selectedIndices.length < 4) {
-        setSelectedIndices([...selectedIndices, indexId]);
-      } else {
-        setSelectedIndices([...selectedIndices.slice(1), indexId]);
-      }
+      // Prevent unselecting to ensure we always have 4 cards
+      return;
     }
-    // Auto-close after selection
+    
+    // Always keep 4 items by replacing the oldest selection
+    setSelectedIndices([...selectedIndices.slice(1), indexId]);
     setShowIndicesDropdown(false);
   };
 
@@ -166,27 +161,34 @@ export default function Index() {
 
         {/* Dropdown Menu */}
         {showIndicesDropdown && (
-          <div className="absolute top-full left-4 right-4 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-30">
-            <div className="max-h-64 overflow-y-auto">
+          <div className="absolute top-full left-4 right-4 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden">
+            <div className="max-h-64 overflow-y-auto p-2">
               {allIndices.map((idx) => (
                 <button
                   key={idx.id}
                   onClick={() => toggleIndex(idx.id)}
-                  className="w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-b-0 flex items-center justify-between"
+                  className={`w-full px-3 py-3 text-left transition-colors mb-1 last:mb-0 rounded-lg flex items-center justify-between ${
+                    selectedIndices.includes(idx.id) ? 'bg-indigo-50 hover:bg-indigo-100' : 'hover:bg-gray-50'
+                  }`}
                 >
-                  <span className={`text-sm font-medium ${selectedIndices.includes(idx.id) ? 'text-primary' : 'text-gray-800'}`}>
+                  <span className={`text-sm font-bold ${selectedIndices.includes(idx.id) ? 'text-indigo-700' : 'text-gray-700'}`}>
                     {idx.name}
                   </span>
-                  {selectedIndices.includes(idx.id) && (
-                    <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
+                  {selectedIndices.includes(idx.id) ? (
+                    <div className="text-[10px] uppercase tracking-wider font-bold text-indigo-700 bg-indigo-100 px-2 py-1 rounded border border-indigo-200 shadow-sm flex-shrink-0">
+                      Pinned
+                    </div>
+                  ) : (
+                    <div className="text-[10px] uppercase tracking-wider font-bold text-gray-400 bg-gray-50 hover:bg-gray-100 px-2 py-1 rounded border border-gray-200 flex-shrink-0 transition-colors">
+                      Swap
+                    </div>
                   )}
                 </button>
               ))}
             </div>
-            <div className="px-4 py-2 bg-gray-50 border-t border-gray-200 text-xs text-gray-600">
-              Selected: {selectedIndices.length}/4
+            <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-600 font-semibold flex justify-between items-center">
+              <span>Selected Indices</span>
+              <span className="text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-md">{selectedIndices.length} / 4</span>
             </div>
           </div>
         )}
@@ -230,22 +232,26 @@ export default function Index() {
 
         {/* News Tab Content - Centered */}
         {activeTab === "news" && (
-          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20">
-            <div className="w-full max-w-2xl overflow-y-auto">
-              {newsData.map(news => (
-                <NewsCard key={news.id} date={news.date} title={news.title} description={news.description} />
-              ))}
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20 pt-4">
+            <div className="w-full max-w-2xl overflow-y-auto px-4">
+              <div className="grid grid-cols-2 gap-3 pb-8">
+                {newsData.map(news => (
+                  <NewsCard key={news.id} date={news.date} title={news.title} description={news.description} />
+                ))}
+              </div>
             </div>
           </div>
         )}
 
         {/* Results Tab Content - Centered */}
         {activeTab === "results" && (
-          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20">
-            <div className="w-full max-w-2xl overflow-y-auto">
-              {resultsData.map(res => (
-                <ResultCard key={res.id} symbol={res.symbol} change={res.change} title={res.title} description={res.description} />
-              ))}
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20 pt-4">
+            <div className="w-full max-w-2xl overflow-y-auto px-4">
+              <div className="grid grid-cols-2 gap-3 pb-8">
+                {resultsData.map(res => (
+                  <ResultCard key={res.id} symbol={res.symbol} change={res.change} title={res.title} description={res.description} />
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -266,15 +272,15 @@ export default function Index() {
             </div>
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-2">
-                <div className="w-16 h-16 bg-blue-50 rounded-lg flex items-center justify-center text-primary">
+                <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
                   <GlobalFuturesIcon />
                 </div>
-                <p className="text-sm font-semibold text-gray-900">Global Futures</p>
-                <p className="text-xs text-gray-600 text-center">Trade global futures contracts with real-time data</p>
+                <p className="text-sm font-bold text-gray-900">Global Futures</p>
+                <p className="text-xs text-gray-500 text-center">Trade global futures contracts with real-time data</p>
               </div>
               <button 
                 onClick={() => setShowMoreCategories(false)}
-                className="w-full bg-primary text-white py-3 rounded-lg font-semibold text-sm hover:bg-primary/90 transition-colors"
+                className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-indigo-700 transition-colors shadow-sm"
               >
                 Explore Global Futures
               </button>
