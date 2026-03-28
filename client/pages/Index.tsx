@@ -40,16 +40,38 @@ const ResultCard = ({ symbol, change, title, description }: { symbol: string; ch
 );
 
 const allIndices = [
-  { id: 'nifty50', name: 'NIFTY 50', value: '22,819.60', change: '-486.85', changePercent: '2.09', isNegative: true },
-  { id: 'niftybank', name: 'NIFTY BANK', value: '52,274.60', change: '-1,433.50', changePercent: '2.67', isNegative: true },
-  { id: 'sensex', name: 'SENSEX', value: '73,583.22', change: '-1,690.23', changePercent: '2.25', isNegative: true },
-  { id: 'bankex', name: 'BANKEX', value: '48,762.15', change: '+425.50', changePercent: '0.88', isNegative: false },
-  { id: 'niftyit', name: 'NIFTY IT', value: '42,105.30', change: '-852.40', changePercent: '1.98', isNegative: true },
-  { id: 'niftypharm', name: 'NIFTY PHARMA', value: '18,456.75', change: '+267.80', changePercent: '1.47', isNegative: false },
-  { id: 'niftyinfra', name: 'NIFTY INFRA', value: '8,942.50', change: '-123.45', changePercent: '1.36', isNegative: true },
-  { id: 'niftyenergyc', name: 'NIFTY ENERGY', value: '3,205.40', change: '+89.20', changePercent: '2.86', isNegative: false },
-  { id: 'niftypse', name: 'NIFTY PSE', value: '5,834.60', change: '-245.30', changePercent: '4.03', isNegative: true },
-  { id: 'niftyrealty', name: 'NIFTY REALTY', value: '892.30', change: '+12.50', changePercent: '1.41', isNegative: false },
+  { id: 'nifty50', name: 'NIFTY 50', value: '22,819.00', change: '486', changePercent: '2.09', isNegative: true },
+  { id: 'niftybank', name: 'NIFTY BANK', value: '52,274.60', change: '1,433.50', changePercent: '2.67', isNegative: true },
+  { id: 'sensex', name: 'SENSEX', value: '73,583.22', change: '1,690.23', changePercent: '2.25', isNegative: true },
+  { id: 'bankex', name: 'BANKEX', value: '48,762.15', change: '425.50', changePercent: '0.88', isNegative: false },
+  { id: 'niftyit', name: 'NIFTY IT', value: '42,105.30', change: '852.40', changePercent: '1.98', isNegative: true },
+  { id: 'niftypharm', name: 'NIFTY PHARMA', value: '18,456.75', change: '267.80', changePercent: '1.47', isNegative: false },
+  { id: 'niftyinfra', name: 'NIFTY INFRA', value: '8,942.50', change: '123.45', changePercent: '1.36', isNegative: true },
+  { id: 'niftyenergyc', name: 'NIFTY ENERGY', value: '3,205.40', change: '89.20', changePercent: '2.86', isNegative: false },
+  { id: 'niftypse', name: 'NIFTY PSE', value: '5,834.60', change: '245.30', changePercent: '4.03', isNegative: true },
+  { id: 'niftyrealty', name: 'NIFTY REALTY', value: '892.30', change: '12.50', changePercent: '1.41', isNegative: false },
+];
+
+const newsData = [
+  { id: 1, date: "Mar 28, 2026", title: "Market Rallies on Strong Banking Sector Performance", description: "Banking stocks showed resilience today with major indices gaining momentum. HDFC Bank and ICICI Bank led the gains amid positive quarterly results from sector leaders." },
+  { id: 2, date: "Mar 27, 2026", title: "RBI Maintains Interest Rates, Signals Hawkish Stance", description: "The Reserve Bank of India kept benchmark rates unchanged but indicated a shift towards monetary tightening. This could impact market sentiment in the coming weeks." },
+  { id: 3, date: "Mar 26, 2026", title: "IT Sector Faces Global Headwinds, Stocks Decline", description: "Information technology stocks declined 2.5% as concerns over global recession persist. Major IT service companies are reviewing their FY2027 guidance." },
+  { id: 4, date: "Mar 25, 2026", title: "EV Startups See Surge in Funding Despite Market Volatility", description: "Several electric vehicle startups announced new rounds of funding, showing continued interest in the green technology sector." },
+  { id: 5, date: "Mar 24, 2026", title: "Consumer Goods FMCG Growth Outpaces Estimates", description: "Fast-moving consumer goods companies reported higher-than-expected sales growth for the quarter, driven by rural demand recovery." },
+  { id: 6, date: "Mar 23, 2026", title: "Oil Prices Stabilize After Recent Supply Constraints", description: "Global crude oil prices stabilized around $85 per barrel following weeks of volatility due to geopolitical tensions." },
+  { id: 7, date: "Mar 22, 2026", title: "New Regulations for Mutual Funds Announced", description: "SEBI announced a new set of regulations aimed at increasing transparency in mutual fund disclosures and protecting retail investors." },
+  { id: 8, date: "Mar 21, 2026", title: "Infrastructure Projects Get Fast-Track Approvals", description: "The government has set up a new committee to fast-track approvals for large-scale infrastructure projects to boost economic growth." },
+];
+
+const resultsData = [
+  { id: 1, symbol: "INFY", change: "+2.45% (↑)", title: "Infosys Q4 Results Beat Expectations", description: "Infosys reported strong Q4 results with revenue growth of 4.2% and margin expansion of 50 bps." },
+  { id: 2, symbol: "TCS", change: "-1.82% (↓)", title: "TCS Misses Margin Targets in Q4", description: "Tata Consultancy Services reported mixed Q4 results with lower-than-expected margins due to wage inflation." },
+  { id: 3, symbol: "RELIANCE", change: "+3.12% (↑)", title: "Reliance Industries Announces 50% Dividend Increase", description: "Reliance Industries announced an exceptional dividend hike along with strong refinery margins." },
+  { id: 4, symbol: "HDFCBANK", change: "+1.95% (↑)", title: "HDFC Bank Shows Robust Credit Growth", description: "HDFC Bank reported a 15% year-on-year growth in its loan book, driven by strong retail and corporate demand." },
+  { id: 5, symbol: "WIPRO", change: "-0.75% (↓)", title: "Wipro Q4 Revenue Flat, Guidance Cautious", description: "Wipro reported flat revenue growth for the quarter and provided a cautious outlook for the upcoming financial year." },
+  { id: 6, symbol: "ITC", change: "+1.20% (↑)", title: "ITC Cigarette Volumes Beat Estimates", description: "ITC reported a strong quarter with cigarette volumes exceeding analyst expectations, leading to a bump in stock price." },
+  { id: 7, symbol: "SBIN", change: "+2.50% (↑)", title: "SBI Asset Quality Improves Further", description: "State Bank of India reported lower non-performing assets and higher profit margins for the quarter." },
+  { id: 8, symbol: "BHARTIARTL", change: "+1.80% (↑)", title: "Bharti Airtel ARPU Reaches New High", description: "Bharti Airtel reported its highest ever Average Revenue Per User (ARPU) following recent tariff hikes." },
 ];
 
 export default function Index() {
@@ -93,7 +115,7 @@ export default function Index() {
   const displayedIndices = allIndices.filter(idx => selectedIndices.includes(idx.id));
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 flex-shrink-0 z-20">
         <div className="flex items-center justify-between px-4 py-3">
@@ -119,36 +141,24 @@ export default function Index() {
       </div>
 
       {/* Market Indices with Dropdown */}
-      <div className="px-4 py-4 border-b border-gray-100 relative flex-shrink-0" ref={indicesDropdownRef}>
-        <div className="flex justify-between items-start gap-4 mb-4">
-          {displayedIndices.slice(0, 2).map((idx) => (
-            <div key={idx.id} className="flex-1">
-              <div className="text-xs text-gray-600 mb-1">{idx.name}</div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-gray-900">{idx.value}</span>
-                <span className={`text-xs font-medium whitespace-nowrap ${idx.isNegative ? 'text-red-600' : 'text-green-600'}`}>
-                  {idx.isNegative ? '-' : '+'}{idx.change} ({idx.changePercent}%)
-                </span>
-              </div>
-            </div>
-          ))}
+      <div className="p-4 bg-white border-b border-gray-100 relative flex-shrink-0 shadow-sm z-30" ref={indicesDropdownRef}>
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-sm font-bold text-gray-900">Market Indices</h2>
           <button 
             onClick={() => setShowIndicesDropdown(!showIndicesDropdown)}
-            className="p-2 relative z-30 flex-shrink-0"
+            className="p-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
           >
-            <ChevronDown className="w-5 h-5 text-gray-600" />
+            <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${showIndicesDropdown ? 'rotate-180' : ''}`} />
           </button>
         </div>
-
-        <div className="flex justify-between items-start gap-4">
-          {displayedIndices.slice(2, 4).map((idx) => (
-            <div key={idx.id} className="flex-1">
-              <div className="text-xs text-gray-600 mb-1">{idx.name}</div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-gray-900">{idx.value}</span>
-                <span className={`text-xs font-medium whitespace-nowrap ${idx.isNegative ? 'text-red-600' : 'text-green-600'}`}>
-                  {idx.isNegative ? '-' : '+'}{idx.change} ({idx.changePercent}%)
-                </span>
+        
+        <div className="grid grid-cols-2 gap-3">
+          {displayedIndices.map((idx) => (
+            <div key={idx.id} className="bg-gray-50 rounded-xl p-3 border border-gray-200 shadow-sm flex flex-col justify-center">
+              <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1 flex items-center gap-1">{idx.name}</div>
+              <div className="text-base sm:text-lg font-bold text-gray-900 mb-0.5">{idx.value}</div>
+              <div className={`text-[11px] sm:text-xs font-bold whitespace-nowrap ${idx.isNegative ? 'text-red-500' : 'text-green-500'}`}>
+                {idx.isNegative ? '▼' : '▲'} {idx.change} ({idx.changePercent}%)
               </div>
             </div>
           ))}
@@ -220,49 +230,22 @@ export default function Index() {
 
         {/* News Tab Content - Centered */}
         {activeTab === "news" && (
-          <div className="flex justify-center flex-1 min-h-0 overflow-hidden">
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20">
             <div className="w-full max-w-2xl overflow-y-auto">
-              <NewsCard
-                date="Mar 28, 2026"
-                title="Market Rallies on Strong Banking Sector Performance"
-                description="Banking stocks showed resilience today with major indices gaining momentum. HDFC Bank and ICICI Bank led the gains amid positive quarterly results from sector leaders."
-              />
-              <NewsCard
-                date="Mar 27, 2026"
-                title="RBI Maintains Interest Rates, Signals Hawkish Stance"
-                description="The Reserve Bank of India kept benchmark rates unchanged but indicated a shift towards monetary tightening. This could impact market sentiment in the coming weeks as investors reassess valuations."
-              />
-              <NewsCard
-                date="Mar 26, 2026"
-                title="IT Sector Faces Global Headwinds, Stocks Decline"
-                description="Information technology stocks declined 2.5% as concerns over global recession persist. Major IT service companies are reviewing their FY2027 guidance amid uncertain macro conditions."
-              />
+              {newsData.map(news => (
+                <NewsCard key={news.id} date={news.date} title={news.title} description={news.description} />
+              ))}
             </div>
           </div>
         )}
 
         {/* Results Tab Content - Centered */}
         {activeTab === "results" && (
-          <div className="flex justify-center flex-1 min-h-0 overflow-hidden">
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20">
             <div className="w-full max-w-2xl overflow-y-auto">
-              <ResultCard
-                symbol="INFY"
-                change="+2.45% (↑)"
-                title="Infosys Q4 Results Beat Expectations"
-                description="Infosys reported strong Q4 results with revenue growth of 4.2% and margin expansion of 50 bps. The company issued optimistic guidance for FY2027 driving investor confidence."
-              />
-              <ResultCard
-                symbol="TCS"
-                change="-1.82% (↓)"
-                title="TCS Misses Margin Targets in Q4"
-                description="Tata Consultancy Services reported mixed Q4 results with lower-than-expected margins. The company attributed challenges to increased attrition costs and wage inflation in key markets."
-              />
-              <ResultCard
-                symbol="RELIANCE"
-                change="+3.12% (↑)"
-                title="Reliance Industries Announces 50% Dividend Increase"
-                description="Reliance Industries announced an exceptional dividend hike along with strong refinery margins. The downstream segment showed robust performance driving overall company profitability."
-              />
+              {resultsData.map(res => (
+                <ResultCard key={res.id} symbol={res.symbol} change={res.change} title={res.title} description={res.description} />
+              ))}
             </div>
           </div>
         )}
@@ -301,29 +284,29 @@ export default function Index() {
       )}
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center h-20 flex-shrink-0" ref={moreMenuRef}>
-        <button className="flex flex-col items-center gap-1 text-primary font-medium">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
-          <span className="text-xs">Portfolio</span>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" ref={moreMenuRef}>
+        <button className="flex flex-col items-center gap-1 text-primary font-medium w-full py-2 hover:bg-gray-50">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
+          <span className="text-[10px]">Portfolio</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-gray-600 font-medium hover:text-primary">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
-          <span className="text-xs">Strategy</span>
+        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+          <span className="text-[10px]">Strategy</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-gray-600 font-medium hover:text-primary">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>
-          <span className="text-xs">Paper Trade</span>
+        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>
+          <span className="text-[10px]">Paper Trade</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-gray-600 font-medium hover:text-primary">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>
-          <span className="text-xs">Backtest</span>
+        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>
+          <span className="text-[10px]">Backtest</span>
         </button>
         <button 
           onClick={() => setShowMoreCategories(true)}
-          className="flex flex-col items-center gap-1 text-gray-600 font-medium hover:text-primary relative"
+          className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary relative w-full py-2 hover:bg-gray-50 transition-colors"
         >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
-          <span className="text-xs">More</span>
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+          <span className="text-[10px]">More</span>
         </button>
       </div>
     </div>
