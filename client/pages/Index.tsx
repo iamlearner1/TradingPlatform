@@ -1,4 +1,4 @@
-import { ChevronDown, Bell, Search } from "lucide-react";
+import { ChevronDown, Bell, Search, MoreVertical, X } from "lucide-react";
 import { useState } from "react";
 
 // Category Icons
@@ -56,6 +56,7 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState<"news" | "results">("news");
   const [selectedIndices, setSelectedIndices] = useState(['nifty50', 'niftybank', 'sensex', 'bankex']);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMoreCategories, setShowMoreCategories] = useState(false);
 
   const toggleIndex = (indexId: string) => {
     if (selectedIndices.includes(indexId)) {
@@ -74,9 +75,9 @@ export default function Index() {
   const displayedIndices = allIndices.filter(idx => selectedIndices.includes(idx.id));
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-20">
+      <div className="bg-white border-b border-gray-100 flex-shrink-0 z-20">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -100,7 +101,7 @@ export default function Index() {
       </div>
 
       {/* Market Indices with Dropdown */}
-      <div className="px-4 py-4 border-b border-gray-100 relative">
+      <div className="px-4 py-4 border-b border-gray-100 relative flex-shrink-0">
         <div className="flex justify-between items-start gap-4 mb-4">
           {displayedIndices.slice(0, 2).map((idx) => (
             <div key={idx.id} className="flex-1">
@@ -164,20 +165,28 @@ export default function Index() {
       </div>
 
       {/* Categories Grid */}
-      <div className="px-4 mt-6">
+      <div className="px-4 mt-6 flex-shrink-0">
         <div className="grid grid-cols-6 gap-2">
           <CategoryCard icon={<StocksIcon />} label="Stocks" />
           <CategoryCard icon={<IPOIcon />} label="IPO" />
           <CategoryCard icon={<MutualFundsIcon />} label="Mutual Funds" />
           <CategoryCard icon={<ETFIcon />} label="ETF" />
           <CategoryCard icon={<IndicesIcon />} label="Indices" />
-          <CategoryCard icon={<GlobalFuturesIcon />} label="Global Futures" />
+          <button
+            onClick={() => setShowMoreCategories(true)}
+            className="flex flex-col items-center gap-2 p-3"
+          >
+            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-primary hover:bg-blue-100 transition-colors">
+              <MoreVertical className="w-6 h-6" />
+            </div>
+            <p className="text-xs font-medium text-center text-gray-800">More</p>
+          </button>
         </div>
       </div>
 
       {/* Tabs Section - Centered */}
-      <div className="mt-6">
-        <div className="flex border-b border-gray-200 px-4 justify-center">
+      <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex border-b border-gray-200 px-4 justify-center flex-shrink-0">
           <button
             onClick={() => setActiveTab("news")}
             className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors ${
@@ -202,8 +211,8 @@ export default function Index() {
 
         {/* News Tab Content - Centered */}
         {activeTab === "news" && (
-          <div className="flex justify-center">
-            <div className="w-full max-w-2xl overflow-y-auto max-h-96">
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden">
+            <div className="w-full max-w-2xl overflow-y-auto">
               <NewsCard
                 date="Mar 28, 2026"
                 title="Market Rallies on Strong Banking Sector Performance"
@@ -225,8 +234,8 @@ export default function Index() {
 
         {/* Results Tab Content - Centered */}
         {activeTab === "results" && (
-          <div className="flex justify-center">
-            <div className="w-full max-w-2xl overflow-y-auto max-h-96">
+          <div className="flex justify-center flex-1 min-h-0 overflow-hidden">
+            <div className="w-full max-w-2xl overflow-y-auto">
               <ResultCard
                 symbol="INFY"
                 change="+2.45% (↑)"
@@ -250,8 +259,40 @@ export default function Index() {
         )}
       </div>
 
+      {/* More Categories Modal */}
+      {showMoreCategories && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
+          <div className="w-full bg-white rounded-t-2xl p-6 animate-in slide-in-from-bottom">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-bold text-gray-900">More Categories</h3>
+              <button
+                onClick={() => setShowMoreCategories(false)}
+                className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-16 h-16 bg-blue-50 rounded-lg flex items-center justify-center text-primary">
+                  <GlobalFuturesIcon />
+                </div>
+                <p className="text-sm font-semibold text-gray-900">Global Futures</p>
+                <p className="text-xs text-gray-600 text-center">Trade global futures contracts with real-time data</p>
+              </div>
+              <button
+                onClick={() => setShowMoreCategories(false)}
+                className="w-full bg-primary text-white py-3 rounded-lg font-semibold text-sm hover:bg-primary/90 transition-colors"
+              >
+                Explore Global Futures
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center h-20">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center h-20 flex-shrink-0">
         <button className="flex flex-col items-center gap-1 text-primary font-medium">
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
           <span className="text-xs">Portfolio</span>
