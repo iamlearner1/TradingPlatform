@@ -1,0 +1,199 @@
+{
+  "models": {
+    "page": {
+      "displayName": "Page",
+      "description": "A page in the app",
+      "routes": "/",
+      "icon": "Home",
+      "fields": {
+        "title": {
+          "type": "text",
+          "required": true
+        },
+        "description": {
+          "type": "text"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Header",
+      "description": "Top header with logo, search bar, and notifications",
+      "inputs": [
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "defaultValue": "Search for Indices"
+        }
+      ]
+    },
+    {
+      "name": "MarketIndices",
+      "description": "Market indices ticker showing NIFTY 50, NIFTY BANK etc.",
+      "inputs": [
+        {
+          "name": "indices",
+          "type": "array",
+          "subFields": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "change",
+              "type": "number"
+            },
+            {
+              "name": "changePercent",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PromoBanner",
+      "description": "Promotional banner for trading services",
+      "inputs": [
+        {
+          "name": "title",
+          "type": "string",
+          "defaultValue": "Expert-backed Swing Trades"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "defaultValue": "Buy with up to 4X margin"
+        },
+        {
+          "name": "ctaText",
+          "type": "string",
+          "defaultValue": "View MTF Advisory"
+        },
+        {
+          "name": "badge",
+          "type": "string",
+          "defaultValue": "30% UPSIDE"
+        }
+      ]
+    },
+    {
+      "name": "CategoryGrid",
+      "description": "Grid of 10 trading categories",
+      "inputs": [
+        {
+          "name": "categories",
+          "type": "array",
+          "subFields": [
+            {
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "name": "icon",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ToolsGrid",
+      "description": "Grid of trading tools",
+      "inputs": [
+        {
+          "name": "tools",
+          "type": "array",
+          "subFields": [
+            {
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "name": "icon",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ReferralSection",
+      "description": "Referral rewards section",
+      "inputs": [
+        {
+          "name": "title",
+          "type": "string",
+          "defaultValue": "Earn ₹7,500 monthly"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "defaultValue": "₹1,500 per referral"
+        },
+        {
+          "name": "ctaText",
+          "type": "string",
+          "defaultValue": "Refer Now"
+        }
+      ]
+    },
+    {
+      "name": "TrendingCommodities",
+      "description": "Trending commodities section with filters",
+      "inputs": [
+        {
+          "name": "title",
+          "type": "string",
+          "defaultValue": "Trending Commodities"
+        },
+        {
+          "name": "commodities",
+          "type": "array",
+          "subFields": [
+            {
+              "name": "label",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BottomNavigation",
+      "description": "Bottom navigation bar with 5 items",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "array",
+          "subFields": [
+            {
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "name": "icon",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "isNextJs": false,
+  "isSPA": true,
+  "languages": ["typescript"],
+  "styleLibraries": ["tailwindcss"],
+  "uiLibraries": ["radix-ui"],
+  "features": {
+    "darkMode": false,
+    "responsiveDesign": true,
+    "accessibility": true
+  }
+}
