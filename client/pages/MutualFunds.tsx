@@ -128,12 +128,7 @@ const sections = [
       { label: "Top 3 sectors", path: ["portfolio", "topSectors"] },
       { label: "Top 5 holdings", path: ["portfolio", "topHoldings"] },
       { label: "Equity%", path: ["portfolio", "equity"] },
-      { label: "Debt%", path: ["portfolio", "debt"] },
-      { label: "Turnover Ratio", path: ["portfolio", "turnoverRatio"] },
-      { label: "Yield To Maturity", path: ["portfolio", "ytm"] },
-      { label: "Modified Duration", path: ["portfolio", "modDuration"] },
-      { label: "Avg. Maturity", path: ["portfolio", "avgMaturity"] },
-      { label: "Avg. Credit Quality", path: ["portfolio", "avgCreditQuality"] }
+      { label: "Debt%", path: ["portfolio", "debt"] }
     ]
   },
   {
@@ -349,7 +344,7 @@ export default function MutualFunds() {
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pt-4 pb-6">
                 <button 
                   onClick={() => setViewMode("comparison")}
-                  className="w-full py-4 bg-gray-900 text-white rounded-xl font-bold text-[15px] flex justify-between px-6 items-center transition-transform active:scale-[0.99] shadow-[0_4px_10px_rgba(10,14,23,0.2)]"
+                  className="w-full py-4 bg-violet-600 text-white rounded-xl font-bold text-[15px] flex justify-between px-6 items-center transition-transform active:scale-[0.99] shadow-[0_4px_10px_rgba(124,58,237,0.3)] hover:bg-violet-700"
                 >
                   <span>Compare {selectedFundIds.length} Fund{selectedFundIds.length > 1 ? 's' : ''}</span>
                   <ChevronRight className="w-5 h-5" />
@@ -462,7 +457,7 @@ export default function MutualFunds() {
               </div>
             </div>
             
-            <button onClick={() => setIsFilterOpen(false)} className="w-full mt-8 py-3.5 bg-gray-900 text-white rounded-xl font-bold text-[15px] shadow-sm hover:bg-black transition-colors flex justify-center items-center gap-1">
+            <button onClick={() => setIsFilterOpen(false)} className="w-full mt-8 py-3.5 bg-violet-600 text-white rounded-xl font-bold text-[15px] shadow-sm hover:bg-violet-700 transition-colors flex justify-center items-center gap-1">
                Show {currentFunds.length} Result{currentFunds.length !== 1 ? 's' : ''}
             </button>
           </div>

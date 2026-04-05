@@ -127,7 +127,7 @@ export default function IPO() {
             <div className="relative">
               <button 
                 onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
-                className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-3.5 rounded-xl font-medium text-sm transition-transform active:scale-[0.99]"
+                className="w-full flex items-center justify-center gap-2 bg-violet-600 text-white py-3.5 rounded-xl font-medium text-sm transition-colors hover:bg-violet-700 active:scale-[0.99]"
               >
                 <Filter className="w-4 h-4" />
                 Filter by Status {filterStatus !== "All" && `(${filterStatus})`}
@@ -193,7 +193,7 @@ export default function IPO() {
 
                   <button 
                     onClick={() => setSelectedIPO(ipo)}
-                    className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-3.5 rounded-xl font-medium text-[15px] transition-transform active:scale-[0.99]"
+                    className="w-full flex items-center justify-center gap-2 bg-violet-600 text-white py-3.5 rounded-xl font-medium text-[15px] transition-colors hover:bg-violet-700 active:scale-[0.99]"
                   >
                     {ipo.status === 'Closed' ? 'Check IPO Status' : 'Check IPO Details'}
                     {ipo.status === 'Open' && <ArrowUpRight className="w-[18px] h-[18px]" />}
@@ -349,7 +349,7 @@ export default function IPO() {
             </div>
 
             <div className="space-y-3">
-              <button className="w-full py-4 bg-gray-900 text-white rounded-[16px] font-bold text-[15px] transition-transform active:scale-[0.99] shadow-sm">
+              <button className="w-full py-4 bg-violet-600 text-white rounded-[16px] font-bold text-[15px] transition-colors hover:bg-violet-700 active:scale-[0.99] shadow-sm">
                 Apply for IPO
               </button>
               <button 
