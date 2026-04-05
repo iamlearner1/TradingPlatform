@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Stocks from "./pages/Stocks";
+import StockDetails from "./pages/StockDetails";
 import IPO from "./pages/IPO";
 import MutualFunds from "./pages/MutualFunds";
 import ETF from "./pages/ETF";
@@ -29,6 +30,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stocks" element={<Stocks />} />
+          <Route path="/stock/:ticker" element={<StockDetails />} />
           <Route path="/ipo" element={<IPO />} />
           <Route path="/mutual-funds" element={<MutualFunds />} />
           <Route path="/etf" element={<ETF />} />
