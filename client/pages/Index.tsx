@@ -150,7 +150,7 @@ export default function Index() {
         
         <div className="grid grid-cols-2 gap-3">
           {displayedIndices.map((idx) => (
-            <div key={idx.id} className="bg-gray-50 rounded-xl p-3 border border-gray-200 shadow-sm flex items-center justify-between gap-2">
+            <Link to={`/option-chain/${idx.id}`} key={idx.id} className="bg-gray-50 rounded-xl p-3 border border-gray-200 shadow-sm flex items-center justify-between gap-2 hover:bg-gray-100 transition-colors">
               <div className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider leading-tight flex-1 pr-1">{idx.name}</div>
               <div className="flex flex-col items-end text-right flex-shrink-0">
                 <div className="text-sm font-black text-gray-900 mb-0.5">{idx.value}</div>
@@ -158,7 +158,7 @@ export default function Index() {
                   {idx.isNegative ? '▼' : '▲'} {idx.change} ({idx.changePercent}%)
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

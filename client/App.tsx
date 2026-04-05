@@ -18,6 +18,7 @@ import Portfolio from "./pages/Portfolio";
 import Strategy from "./pages/Strategy";
 import PaperTrade from "./pages/PaperTrade";
 import Backtest from "./pages/Backtest";
+import OptionChain from "./pages/OptionChain";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/strategy" element={<Strategy />} />
           <Route path="/paper-trade" element={<PaperTrade />} />
           <Route path="/backtest" element={<Backtest />} />
+          <Route path="/option-chain/:symbol" element={<OptionChain />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
