@@ -38,6 +38,7 @@ export default function OptionChain() {
   
   const [activeTab, setActiveTab] = useState("Option chain");
   const [selectedContract, setSelectedContract] = useState<{strike: number, type: 'CE'|'PE'} | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
   
   // Strategy Mode State
   const [isStrategyMode, setIsStrategyMode] = useState(false);
@@ -98,8 +99,28 @@ export default function OptionChain() {
   const totalRequired = requiredMargin + bufferMargin;
   const shortfall = Math.max(0, totalRequired - availableBalance);
 
+  const handleActionClick = () => {
+    if (strategyLegs.length === 0) return;
+    
+    if (shortfall > 0) {
+      setToast('Mock: Redirecting to payment gateway to add funds...');
+    } else {
+      setToast('Strategy Executed Successfully!');
+      setStrategyLegs([]);
+      setIsStrategyMode(false);
+    }
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden text-gray-800 font-sans relative">
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] text-[13px] font-medium animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-none whitespace-nowrap">
+          {toast}
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -367,7 +388,17 @@ export default function OptionChain() {
                 <div className="w-12 h-12 rounded-lg border border-gray-300 bg-white shadow-sm flex items-center justify-center text-emerald-600 flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                 </div>
-                <button className={`flex-1 font-bold rounded-lg shadow-md transition-all text-[15px] ${shortfall > 0 ? 'bg-[#4c1d95] hover:bg-purple-800 text-white active:scale-[0.99]' : 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-[0.99]'}`}>
+                <button 
+                  disabled={strategyLegs.length === 0}
+                  onClick={handleActionClick}
+                  className={`flex-1 font-bold rounded-lg shadow-md transition-all text-[15px] ${
+                    strategyLegs.length === 0 
+                      ? 'bg-gray-200 text-gray-400' 
+                      : shortfall > 0 
+                        ? 'bg-[#4c1d95] hover:bg-purple-800 text-white active:scale-[0.99]' 
+                        : 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-[0.99]'
+                  }`}
+                >
                    {shortfall > 0 
                      ? `Add ₹${shortfall.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} to continue` 
                      : strategyLegs.length > 0 
