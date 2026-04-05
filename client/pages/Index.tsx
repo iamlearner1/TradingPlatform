@@ -1,5 +1,6 @@
 import { ChevronDown, Bell, Search, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Category Icons
 const StocksIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2V17zm4 0h-2V7h2V17zm4 0h-2v-4h2V17z"/></svg>;
@@ -9,18 +10,18 @@ const ETFIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 
 const IndicesIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>;
 const GlobalFuturesIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>;
 
-const CategoryCard = ({ icon: Icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="flex flex-col items-center gap-2 p-1.5">
-    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100/50">
+const CategoryCard = ({ icon: Icon, label, to }: { icon: React.ReactNode; label: string; to: string }) => (
+  <Link to={to} className="flex flex-col items-center gap-2 p-1.5 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-xl">
+    <div className="w-14 h-14 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 shadow-sm border border-violet-100/50 hover:bg-violet-100 transition-colors">
       {Icon}
     </div>
     <p className="text-[11px] font-bold text-center text-gray-800 leading-tight">{label}</p>
-  </div>
+  </Link>
 );
 
 const NewsCard = ({ date, title, description }: { date: string; title: string; description: string }) => (
   <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
-    <p className="text-[10px] font-bold tracking-wider uppercase text-indigo-500 mb-1.5">{date}</p>
+    <p className="text-[10px] font-bold tracking-wider uppercase text-violet-500 mb-1.5">{date}</p>
     <h4 className="text-sm font-bold text-gray-900 mb-2 line-clamp-3 leading-snug">{title}</h4>
     <p className="text-xs text-gray-500 leading-relaxed line-clamp-3 mt-auto">{description}</p>
   </div>
@@ -115,7 +116,7 @@ export default function Index() {
       <div className="bg-white border-b border-gray-100 flex-shrink-0 z-20">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">UP</span>
             </div>
           </div>
@@ -149,11 +150,13 @@ export default function Index() {
         
         <div className="grid grid-cols-2 gap-3">
           {displayedIndices.map((idx) => (
-            <div key={idx.id} className="bg-gray-50 rounded-xl p-3 border border-gray-200 shadow-sm flex flex-col justify-center">
-              <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1 flex items-center gap-1">{idx.name}</div>
-              <div className="text-base sm:text-lg font-bold text-gray-900 mb-0.5">{idx.value}</div>
-              <div className={`text-[11px] sm:text-xs font-bold whitespace-nowrap ${idx.isNegative ? 'text-red-500' : 'text-green-500'}`}>
-                {idx.isNegative ? '▼' : '▲'} {idx.change} ({idx.changePercent}%)
+            <div key={idx.id} className="bg-gray-50 rounded-xl p-3 border border-gray-200 shadow-sm flex items-center justify-between gap-2">
+              <div className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider leading-tight flex-1 pr-1">{idx.name}</div>
+              <div className="flex flex-col items-end text-right flex-shrink-0">
+                <div className="text-sm font-black text-gray-900 mb-0.5">{idx.value}</div>
+                <div className={`text-[10px] font-bold whitespace-nowrap ${idx.isNegative ? 'text-red-500' : 'text-green-500'}`}>
+                  {idx.isNegative ? '▼' : '▲'} {idx.change} ({idx.changePercent}%)
+                </div>
               </div>
             </div>
           ))}
@@ -168,14 +171,14 @@ export default function Index() {
                   key={idx.id}
                   onClick={() => toggleIndex(idx.id)}
                   className={`w-full px-3 py-3 text-left transition-colors mb-1 last:mb-0 rounded-lg flex items-center justify-between ${
-                    selectedIndices.includes(idx.id) ? 'bg-indigo-50 hover:bg-indigo-100' : 'hover:bg-gray-50'
+                    selectedIndices.includes(idx.id) ? 'bg-violet-50 hover:bg-violet-100' : 'hover:bg-gray-50'
                   }`}
                 >
-                  <span className={`text-sm font-bold ${selectedIndices.includes(idx.id) ? 'text-indigo-700' : 'text-gray-700'}`}>
+                  <span className={`text-sm font-bold ${selectedIndices.includes(idx.id) ? 'text-violet-700' : 'text-gray-700'}`}>
                     {idx.name}
                   </span>
                   {selectedIndices.includes(idx.id) ? (
-                    <div className="text-[10px] uppercase tracking-wider font-bold text-indigo-700 bg-indigo-100 px-2 py-1 rounded border border-indigo-200 shadow-sm flex-shrink-0">
+                    <div className="text-[10px] uppercase tracking-wider font-bold text-violet-700 bg-violet-100 px-2 py-1 rounded border border-violet-200 shadow-sm flex-shrink-0">
                       Pinned
                     </div>
                   ) : (
@@ -188,7 +191,7 @@ export default function Index() {
             </div>
             <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-600 font-semibold flex justify-between items-center">
               <span>Selected Indices</span>
-              <span className="text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-md">{selectedIndices.length} / 4</span>
+              <span className="text-violet-700 bg-violet-100 px-2 py-0.5 rounded-md">{selectedIndices.length} / 4</span>
             </div>
           </div>
         )}
@@ -197,33 +200,33 @@ export default function Index() {
       {/* Categories Grid - 5 items only */}
       <div className="px-4 mt-6 flex-shrink-0">
         <div className="grid grid-cols-5 gap-2">
-          <CategoryCard icon={<StocksIcon />} label="Stocks" />
-          <CategoryCard icon={<IPOIcon />} label="IPO" />
-          <CategoryCard icon={<MutualFundsIcon />} label="Mutual Funds" />
-          <CategoryCard icon={<ETFIcon />} label="ETF" />
-          <CategoryCard icon={<IndicesIcon />} label="Indices" />
+          <CategoryCard icon={<StocksIcon />} label="Stocks" to="/stocks" />
+          <CategoryCard icon={<IPOIcon />} label="IPO" to="/ipo" />
+          <CategoryCard icon={<MutualFundsIcon />} label="Mutual Funds" to="/mutual-funds" />
+          <CategoryCard icon={<ETFIcon />} label="ETF" to="/etf" />
+          <CategoryCard icon={<IndicesIcon />} label="Indices" to="/indices" />
         </div>
       </div>
 
       {/* Tabs Section - Centered */}
       <div className="flex flex-col flex-1 min-h-0">
-        <div className="flex border-b border-gray-200 px-4 justify-center flex-shrink-0">
+        <div className="flex border-b border-gray-200 justify-center flex-shrink-0">
           <button
             onClick={() => setActiveTab("news")}
-            className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors ${
+            className={`flex-1 py-3.5 font-bold text-sm border-b-2 transition-colors text-center ${
               activeTab === "news"
-                ? "text-primary border-primary"
-                : "text-gray-600 border-transparent hover:text-gray-900"
+                ? "text-violet-600 border-violet-600"
+                : "text-gray-500 border-transparent hover:text-gray-900 bg-gray-50/50"
             }`}
           >
             News
           </button>
           <button
             onClick={() => setActiveTab("results")}
-            className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors ${
+            className={`flex-1 py-3.5 font-bold text-sm border-b-2 transition-colors text-center ${
               activeTab === "results"
-                ? "text-primary border-primary"
-                : "text-gray-600 border-transparent hover:text-gray-900"
+                ? "text-violet-600 border-violet-600"
+                : "text-gray-500 border-transparent hover:text-gray-900 bg-gray-50/50"
             }`}
           >
             Results
@@ -234,7 +237,7 @@ export default function Index() {
         {activeTab === "news" && (
           <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20 pt-4">
             <div className="w-full max-w-2xl overflow-y-auto px-4">
-              <div className="grid grid-cols-2 gap-3 pb-8">
+              <div className="flex flex-col gap-3 pb-8">
                 {newsData.map(news => (
                   <NewsCard key={news.id} date={news.date} title={news.title} description={news.description} />
                 ))}
@@ -247,7 +250,7 @@ export default function Index() {
         {activeTab === "results" && (
           <div className="flex justify-center flex-1 min-h-0 overflow-hidden bg-gray-50 pb-20 pt-4">
             <div className="w-full max-w-2xl overflow-y-auto px-4">
-              <div className="grid grid-cols-2 gap-3 pb-8">
+              <div className="flex flex-col gap-3 pb-8">
                 {resultsData.map(res => (
                   <ResultCard key={res.id} symbol={res.symbol} change={res.change} title={res.title} description={res.description} />
                 ))}
@@ -272,7 +275,7 @@ export default function Index() {
             </div>
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-2">
-                <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
+                <div className="w-16 h-16 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 shadow-sm border border-violet-100">
                   <GlobalFuturesIcon />
                 </div>
                 <p className="text-sm font-bold text-gray-900">Global Futures</p>
@@ -280,7 +283,7 @@ export default function Index() {
               </div>
               <button 
                 onClick={() => setShowMoreCategories(false)}
-                className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-indigo-700 transition-colors shadow-sm"
+                className="w-full bg-violet-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-violet-700 transition-colors shadow-sm"
               >
                 Explore Global Futures
               </button>
@@ -291,25 +294,25 @@ export default function Index() {
 
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" ref={moreMenuRef}>
-        <button className="flex flex-col items-center gap-1 text-primary font-medium w-full py-2 hover:bg-gray-50">
+        <Link to="/portfolio" className="flex flex-col items-center justify-center gap-1 text-violet-600 font-medium w-full h-full py-2 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
           <span className="text-[10px]">Portfolio</span>
-        </button>
-        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+        </Link>
+        <Link to="/strategy" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
           <span className="text-[10px]">Strategy</span>
-        </button>
-        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+        </Link>
+        <Link to="/paper-trade" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>
           <span className="text-[10px]">Paper Trade</span>
-        </button>
-        <button className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary w-full py-2 hover:bg-gray-50 transition-colors">
+        </Link>
+        <Link to="/backtest" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>
           <span className="text-[10px]">Backtest</span>
-        </button>
+        </Link>
         <button 
           onClick={() => setShowMoreCategories(true)}
-          className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-primary relative w-full py-2 hover:bg-gray-50 transition-colors"
+          className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-violet-600 relative w-full py-2 hover:bg-gray-50 transition-colors"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
           <span className="text-[10px]">More</span>
