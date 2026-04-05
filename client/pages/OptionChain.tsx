@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeft, Search, Settings, Activity, PlusCircle, Minus, Plus } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 const generateOptionChain = (spotPrice: number) => {
   const strikes = [];
@@ -33,6 +33,7 @@ type SelectedLeg = { strike: number, type: 'CE' | 'PE', action: 'Buy' | 'Sell', 
 
 export default function OptionChain() {
   const { symbol } = useParams();
+  const navigate = useNavigate();
   const indexName = symbol?.replace('nifty', 'Nifty ')?.replace('bank', 'Bank')?.replace(/^./, str => str.toUpperCase()) || "Nifty 50";
   const spotPrice = 22713.10;
   
@@ -104,12 +105,16 @@ export default function OptionChain() {
     
     if (shortfall > 0) {
       setToast('Mock: Redirecting to payment gateway to add funds...');
+      setTimeout(() => setToast(null), 3000);
     } else {
       setToast('Strategy Executed Successfully!');
-      setStrategyLegs([]);
-      setIsStrategyMode(false);
+      setTimeout(() => {
+        setToast(null);
+        setStrategyLegs([]);
+        setIsStrategyMode(false);
+        navigate('/portfolio?tab=paperPortfolio', { state: { executedStrategy: strategyLegs } });
+      }, 1500);
     }
-    setTimeout(() => setToast(null), 3000);
   };
   if (symbol && symbol.toLowerCase() !== 'nifty50') {
     return (
@@ -196,7 +201,7 @@ export default function OptionChain() {
             <p className="text-[10px] text-gray-500 mb-0.5">{isStrategyMode ? 'Legs added' : 'View'}</p>
             <div className="flex items-center gap-1 font-medium text-sm">
               {isStrategyMode ? <span className="text-gray-900">{strategyLegs.length}</span> : 'Call & Put'}
-              {!isStrategyMode && <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>}
+              <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
           </div>
         </div>
@@ -211,9 +216,6 @@ export default function OptionChain() {
           >
              <div className={`w-3.5 h-3.5 bg-white rounded-full absolute top-[3px] transition-all ${isStrategyMode ? 'left-[18px]' : 'left-[3px]'}`}></div>
           </button>
-          <div className="ml-1 flex items-center justify-center p-1 border border-gray-300 rounded-full">
-            <Plus className="w-3 h-3 text-gray-700" />
-          </div>
         </div>
       </div>
 
@@ -258,39 +260,39 @@ export default function OptionChain() {
                   <tr className="active:bg-gray-50 border-b border-gray-100" onClick={() => !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}>
                     
                     {/* Call Side */}
-                    <td colSpan={2} style={{...tdStyle, padding: '10px 8px'}} className={`${row.strike < spotPrice ? 'bg-[#fffbf0]' : ''}`}>
-                       <div className="flex justify-between items-start mb-2 px-1">
-                          <div className="text-left cursor-pointer" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
+                    <td colSpan={2} style={{...tdStyle, padding: '10px 2px'}} className={`${row.strike < spotPrice ? 'bg-[#fffbf0]' : ''}`}>
+                       <div className="grid grid-cols-2 gap-0 mb-2">
+                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
                             <div className="text-emerald-700 font-medium text-[13px]">{row.ce.oi}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.oiPos ? '+' : '-'}{row.ce.oiChg}</div>
                           </div>
-                          <div className="text-right cursor-pointer" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
+                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.ce.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.ltpChg}</div>
                           </div>
                        </div>
                        
                        {isStrategyMode && (
-                         <div className="flex flex-col mb-1 w-full max-w-[130px] mx-auto">
-                            <div className="flex gap-2 justify-center">
+                         <div className="flex flex-col mb-1 w-full max-w-[110px] mx-auto">
+                            <div className="flex gap-1.5 justify-center">
                               <button onClick={(e) => { e.stopPropagation(); toggleLeg(row.strike, 'CE', 'Buy'); }}
-                                className={`flex-1 py-1.5 rounded transition font-bold text-xs ${getLeg(row.strike, 'CE')?.action === 'Buy' ? 'bg-[#107c5a] text-white border border-[#107c5a]' : 'bg-transparent text-[#107c5a] border border-[#107c5a] hover:bg-[#107c5a]/10'}`}>
+                                className={`flex-1 py-1 rounded transition font-bold text-xs ${getLeg(row.strike, 'CE')?.action === 'Buy' ? 'bg-[#107c5a] text-white border border-[#107c5a]' : 'bg-transparent text-[#107c5a] border border-[#107c5a] hover:bg-[#107c5a]/10'}`}>
                                 Buy
                               </button>
                               <button onClick={(e) => { e.stopPropagation(); toggleLeg(row.strike, 'CE', 'Sell'); }}
-                                className={`flex-1 py-1.5 rounded transition font-bold text-xs ${getLeg(row.strike, 'CE')?.action === 'Sell' ? 'bg-[#d85638] text-white border border-[#d85638]' : 'bg-transparent text-[#d85638] border border-[#d85638] hover:bg-[#d85638]/10'}`}>
+                                className={`flex-1 py-1 rounded transition font-bold text-xs ${getLeg(row.strike, 'CE')?.action === 'Sell' ? 'bg-[#d85638] text-white border border-[#d85638]' : 'bg-transparent text-[#d85638] border border-[#d85638] hover:bg-[#d85638]/10'}`}>
                                 Sell
                               </button>
                             </div>
                             {getLeg(row.strike, 'CE') && (
                               <div className="flex flex-col border border-gray-200 bg-white rounded mt-1.5 shadow-sm overflow-hidden">
-                                <div className="flex justify-between items-center px-1.5 py-1.5">
-                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'CE', -1); }}><Minus className="w-3 h-3"/></button>
-                                  <span className="text-[13px] font-bold text-gray-900">{getLeg(row.strike, 'CE')?.qty}</span>
-                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'CE', 1); }}><Plus className="w-3 h-3"/></button>
+                                <div className="flex justify-between items-center px-1 py-1">
+                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300 flex-shrink-0" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'CE', -1); }}><Minus className="w-2.5 h-2.5"/></button>
+                                  <span className="text-[12px] font-bold text-gray-900 leading-none">{getLeg(row.strike, 'CE')?.qty}</span>
+                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300 flex-shrink-0" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'CE', 1); }}><Plus className="w-2.5 h-2.5"/></button>
                                 </div>
-                                <div className="text-[10px] text-gray-500 pb-1 text-center bg-gray-50">
-                                   {getLeg(row.strike, 'CE')?.qty} Lot = {(getLeg(row.strike, 'CE')?.qty || 1) * 65} Qty
+                                <div className="text-[9px] text-gray-500 pb-0.5 text-center bg-gray-50">
+                                   {(getLeg(row.strike, 'CE')?.qty || 1) * 65} Qty
                                 </div>
                               </div>
                             )}
@@ -307,39 +309,39 @@ export default function OptionChain() {
                     </td>
 
                     {/* Put Side */}
-                    <td colSpan={2} style={{...tdStyle, padding: '10px 8px'}} className={`${row.strike > spotPrice ? 'bg-[#fffbf0]' : ''}`}>
-                       <div className="flex justify-between items-start mb-2 px-1">
-                          <div className="text-left cursor-pointer" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
+                    <td colSpan={2} style={{...tdStyle, padding: '10px 2px'}} className={`${row.strike > spotPrice ? 'bg-[#fffbf0]' : ''}`}>
+                       <div className="grid grid-cols-2 gap-0 mb-2">
+                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.pe.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.pe.ltpChg}</div>
                           </div>
-                          <div className="text-right cursor-pointer" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
+                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
                             <div className="text-emerald-700 font-medium text-[13px]">{row.pe.oi}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.pe.oiPos ? '+' : '-'}{row.pe.oiChg}</div>
                           </div>
                        </div>
 
                        {isStrategyMode && (
-                         <div className="flex flex-col mb-1 w-full max-w-[130px] mx-auto">
-                            <div className="flex gap-2 justify-center">
+                         <div className="flex flex-col mb-1 w-full max-w-[110px] mx-auto">
+                            <div className="flex gap-1.5 justify-center">
                               <button onClick={(e) => { e.stopPropagation(); toggleLeg(row.strike, 'PE', 'Buy'); }}
-                                className={`flex-1 py-1.5 rounded transition font-bold text-xs ${getLeg(row.strike, 'PE')?.action === 'Buy' ? 'bg-[#107c5a] text-white border border-[#107c5a]' : 'bg-transparent text-[#107c5a] border border-[#107c5a] hover:bg-[#107c5a]/10'}`}>
+                                className={`flex-1 py-1 rounded transition font-bold text-xs ${getLeg(row.strike, 'PE')?.action === 'Buy' ? 'bg-[#107c5a] text-white border border-[#107c5a]' : 'bg-transparent text-[#107c5a] border border-[#107c5a] hover:bg-[#107c5a]/10'}`}>
                                 Buy
                               </button>
                               <button onClick={(e) => { e.stopPropagation(); toggleLeg(row.strike, 'PE', 'Sell'); }}
-                                className={`flex-1 py-1.5 rounded transition font-bold text-xs ${getLeg(row.strike, 'PE')?.action === 'Sell' ? 'bg-[#d85638] text-white border border-[#d85638]' : 'bg-transparent text-[#d85638] border border-[#d85638] hover:bg-[#d85638]/10'}`}>
+                                className={`flex-1 py-1 rounded transition font-bold text-xs ${getLeg(row.strike, 'PE')?.action === 'Sell' ? 'bg-[#d85638] text-white border border-[#d85638]' : 'bg-transparent text-[#d85638] border border-[#d85638] hover:bg-[#d85638]/10'}`}>
                                 Sell
                               </button>
                             </div>
                             {getLeg(row.strike, 'PE') && (
                               <div className="flex flex-col border border-gray-200 bg-white rounded mt-1.5 shadow-sm overflow-hidden">
-                                <div className="flex justify-between items-center px-1.5 py-1.5">
-                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'PE', -1); }}><Minus className="w-3 h-3"/></button>
-                                  <span className="text-[13px] font-bold text-gray-900">{getLeg(row.strike, 'PE')?.qty}</span>
-                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'PE', 1); }}><Plus className="w-3 h-3"/></button>
+                                <div className="flex justify-between items-center px-1 py-1">
+                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300 flex-shrink-0" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'PE', -1); }}><Minus className="w-2.5 h-2.5"/></button>
+                                  <span className="text-[12px] font-bold text-gray-900 leading-none">{getLeg(row.strike, 'PE')?.qty}</span>
+                                  <button className="p-0.5 text-gray-600 rounded-full hover:bg-gray-100 border border-gray-300 flex-shrink-0" onClick={(e) => { e.stopPropagation(); updateQty(row.strike, 'PE', 1); }}><Plus className="w-2.5 h-2.5"/></button>
                                 </div>
-                                <div className="text-[10px] text-gray-500 pb-1 text-center bg-gray-50">
-                                   {getLeg(row.strike, 'PE')?.qty} Lot = {(getLeg(row.strike, 'PE')?.qty || 1) * 65} Qty
+                                <div className="text-[9px] text-gray-500 pb-0.5 text-center bg-gray-50">
+                                   {(getLeg(row.strike, 'PE')?.qty || 1) * 65} Qty
                                 </div>
                               </div>
                             )}
