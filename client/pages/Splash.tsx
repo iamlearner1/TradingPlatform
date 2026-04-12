@@ -25,7 +25,7 @@ const Splash = () => {
           <TrendingUp className="w-14 h-14 text-violet-600" />
         </div>
         <h1 className="text-6xl font-black text-white tracking-tighter mb-2">
-          INTOX
+          INTOXS
         </h1>
         <p className="text-violet-200 font-bold tracking-widest uppercase text-xs">
           Smart Trading. Simplified.

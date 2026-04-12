@@ -21,9 +21,9 @@ import Backtest from "./pages/Backtest";
 import OptionChain from "./pages/OptionChain";
 import StrategyBuilder from "./pages/StrategyBuilder";
 import CalendarPage from "./pages/Calendar";
-import Splash from "./pages/Splash";
-import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Splash from "./pages/Splash";
 
 const queryClient = new QueryClient();
 
