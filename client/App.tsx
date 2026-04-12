@@ -19,6 +19,7 @@ import Strategy from "./pages/Strategy";
 import PaperTrade from "./pages/PaperTrade";
 import Backtest from "./pages/Backtest";
 import OptionChain from "./pages/OptionChain";
+import CalendarPage from "./pages/Calendar";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/paper-trade" element={<PaperTrade />} />
           <Route path="/backtest" element={<Backtest />} />
           <Route path="/option-chain/:symbol" element={<OptionChain />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

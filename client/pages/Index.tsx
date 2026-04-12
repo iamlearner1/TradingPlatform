@@ -1,4 +1,4 @@
-import { ChevronDown, Bell, Search, X } from "lucide-react";
+import { ChevronDown, Bell, Search, X, Calendar } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -79,17 +79,12 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState<"news" | "results">("news");
   const [selectedIndices, setSelectedIndices] = useState(['nifty50', 'niftybank', 'sensex', 'bankex']);
   const [showIndicesDropdown, setShowIndicesDropdown] = useState(false);
-  const [showMoreCategories, setShowMoreCategories] = useState(false);
   const indicesDropdownRef = useRef<HTMLDivElement>(null);
-  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (indicesDropdownRef.current && !indicesDropdownRef.current.contains(event.target as Node)) {
         setShowIndicesDropdown(false);
-      }
-      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
-        setShowMoreCategories(false);
       }
     };
 
@@ -260,40 +255,8 @@ export default function Index() {
         )}
       </div>
 
-      {/* More Categories Modal */}
-      {showMoreCategories && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="w-full bg-white rounded-t-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-gray-900">More Categories</h3>
-              <button 
-                onClick={() => setShowMoreCategories(false)}
-                className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-16 h-16 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 shadow-sm border border-violet-100">
-                  <GlobalFuturesIcon />
-                </div>
-                <p className="text-sm font-bold text-gray-900">Global Futures</p>
-                <p className="text-xs text-gray-500 text-center">Trade global futures contracts with real-time data</p>
-              </div>
-              <button 
-                onClick={() => setShowMoreCategories(false)}
-                className="w-full bg-violet-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-violet-700 transition-colors shadow-sm"
-              >
-                Explore Global Futures
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" ref={moreMenuRef}>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <Link to="/portfolio" className="flex flex-col items-center justify-center gap-1 text-violet-600 font-medium w-full h-full py-2 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
           <span className="text-[10px]">Portfolio</span>
@@ -310,13 +273,10 @@ export default function Index() {
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>
           <span className="text-[10px]">Backtest</span>
         </Link>
-        <button 
-          onClick={() => setShowMoreCategories(true)}
-          className="flex flex-col items-center gap-1 text-gray-500 font-medium hover:text-violet-600 relative w-full py-2 hover:bg-gray-50 transition-colors"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
-          <span className="text-[10px]">More</span>
-        </button>
+        <Link to="/calendar" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 relative w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
+          <Calendar className="w-5 h-5" />
+          <span className="text-[10px]">Calendar</span>
+        </Link>
       </div>
     </div>
   );
