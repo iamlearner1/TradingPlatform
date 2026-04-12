@@ -266,7 +266,10 @@ export default function Index() {
 
             {/* Logout */}
             <div className="p-4 border-t border-gray-100">
-              <button className="flex items-center gap-3 w-full px-4 py-3.5 bg-red-50 hover:bg-red-100 rounded-xl transition-colors group">
+              <button 
+                onClick={() => navigate("/login")}
+                className="flex items-center gap-3 w-full px-4 py-3.5 bg-red-50 hover:bg-red-100 rounded-xl transition-colors group"
+              >
                 <div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-red-200 transition-colors">
                   <LogOut className="w-4 h-4 text-red-600" />
                 </div>
