@@ -43,6 +43,7 @@ export default function OptionChain() {
   // Strategy Mode State
   const [isStrategyMode, setIsStrategyMode] = useState(false);
   const [strategyLegs, setStrategyLegs] = useState<SelectedLeg[]>([]);
+  const [selectedDirectLeg, setSelectedDirectLeg] = useState<{strike: number, type: 'CE'|'PE', ltp: string, qty: number} | null>(null);
 
   // Memoize so prices don't jump on every render
   const [strikes] = useState(() => generateOptionChain(spotPrice));
@@ -266,7 +267,10 @@ export default function OptionChain() {
                             <div className="text-emerald-700 font-medium text-[13px]">{row.ce.oi}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.oiPos ? '+' : '-'}{row.ce.oiChg}</div>
                           </div>
-                          <div className="text-center flex flex-col items-center justify-center">
+                          <div 
+                            onClick={(e) => { if (!isStrategyMode) { e.stopPropagation(); setSelectedDirectLeg({strike: row.strike, type: 'CE', ltp: row.ce.ltp, qty: 1}); } }}
+                            className={`text-center flex flex-col items-center justify-center p-1 rounded transition-colors ${!isStrategyMode ? 'cursor-pointer hover:bg-orange-50 active:bg-orange-100' : ''}`}
+                          >
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.ce.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.ltpChg}</div>
                           </div>
@@ -311,7 +315,10 @@ export default function OptionChain() {
                     {/* Put Side */}
                     <td colSpan={2} style={{...tdStyle, padding: '6px 2px'}} className={`${row.strike > spotPrice ? 'bg-[#fffbf0]' : ''}`}>
                        <div className={`grid grid-cols-2 gap-0 ${isStrategyMode ? 'mb-2' : ''}`}>
-                          <div className="text-center flex flex-col items-center justify-center">
+                          <div 
+                            onClick={(e) => { if (!isStrategyMode) { e.stopPropagation(); setSelectedDirectLeg({strike: row.strike, type: 'PE', ltp: row.pe.ltp, qty: 1}); } }}
+                            className={`text-center flex flex-col items-center justify-center p-1 rounded transition-colors ${!isStrategyMode ? 'cursor-pointer hover:bg-orange-50 active:bg-orange-100' : ''}`}
+                          >
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.pe.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.pe.ltpChg}</div>
                           </div>
@@ -455,6 +462,86 @@ export default function OptionChain() {
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50/50">
            <Activity className="w-12 h-12 text-gray-300 mb-4 opacity-50" />
            <p className="text-gray-500 font-medium">Future chain data is not active.</p>
+        </div>
+      )}
+
+      {/* Direct Buy/Sell Modal */}
+      {selectedDirectLeg && (
+        <div className="fixed inset-0 bg-black/50 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl animate-in slide-in-from-bottom-8">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                 <h3 className="text-[22px] font-black text-gray-900 leading-tight tracking-tight">
+                   {indexName} {selectedDirectLeg.strike} {selectedDirectLeg.type}
+                 </h3>
+                 <p className="text-xl font-bold text-[#c2410c] mt-1.5 flex items-center gap-1">
+                   <span className="text-sm font-medium text-gray-500">LTP</span> 
+                   ₹{parseFloat(selectedDirectLeg.ltp).toLocaleString('en-IN', {minimumFractionDigits: 2})}
+                 </p>
+              </div>
+              <button onClick={() => setSelectedDirectLeg(null)} className="p-2.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full active:scale-95">
+                 <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+            
+            <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100">
+               <div className="flex justify-between items-center text-[15px]">
+                 <span className="text-gray-500 font-medium">Quantity (Lots)</span>
+                 <div className="flex items-center gap-3">
+                   <button 
+                     onClick={() => setSelectedDirectLeg(prev => prev ? {...prev, qty: Math.max(1, prev.qty - 1)} : null)} 
+                     className="p-1 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-gray-600"
+                   >
+                     <Minus className="w-5 h-5"/>
+                   </button>
+                   <span className="font-bold text-gray-900 min-w-[20px] text-center text-lg">{selectedDirectLeg.qty}</span>
+                   <button 
+                     onClick={() => setSelectedDirectLeg(prev => prev ? {...prev, qty: prev.qty + 1} : null)} 
+                     className="p-1 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-gray-600"
+                   >
+                     <Plus className="w-5 h-5"/>
+                   </button>
+                 </div>
+               </div>
+               <div className="text-[11px] font-medium text-gray-400 text-right mt-1 pr-1">Total Qty: {selectedDirectLeg.qty * lotSize}</div>
+               
+               <div className="flex justify-between items-center text-[15px] mt-3 pt-3 border-t border-gray-200/60">
+                 <span className="text-gray-500 font-medium">Approx Margin</span>
+                 <span className="font-bold text-gray-900">₹{(parseFloat(selectedDirectLeg.ltp) * lotSize * selectedDirectLeg.qty).toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
+               </div>
+            </div>
+
+            <div className="flex gap-3 pb-4">
+              <button 
+                 onClick={() => {
+                    setToast('Order Executed Successfully!');
+                    setTimeout(() => {
+                      setToast(null);
+                      setSelectedDirectLeg(null);
+                      navigate('/portfolio?tab=paperPortfolio', { 
+                        state: { executedStrategy: [{ strike: selectedDirectLeg.strike, type: selectedDirectLeg.type, action: 'Buy', qty: selectedDirectLeg.qty, ltp: parseFloat(selectedDirectLeg.ltp) }] }
+                      });
+                    }, 1200);
+                 }}
+                 className="flex-1 py-3.5 bg-[#107c5a] hover:bg-[#0e6d4f] text-white font-bold rounded-xl shadow-[0_4px_12px_rgba(16,124,90,0.25)] text-[16px] active:scale-[0.98] transition-transform">
+                 BUY
+              </button>
+              <button 
+                 onClick={() => {
+                    setToast('Order Executed Successfully!');
+                    setTimeout(() => {
+                      setToast(null);
+                      setSelectedDirectLeg(null);
+                      navigate('/portfolio?tab=paperPortfolio', { 
+                        state: { executedStrategy: [{ strike: selectedDirectLeg.strike, type: selectedDirectLeg.type, action: 'Sell', qty: selectedDirectLeg.qty, ltp: parseFloat(selectedDirectLeg.ltp) }] }
+                      });
+                    }, 1200);
+                 }}
+                 className="flex-1 py-3.5 bg-[#d85638] hover:bg-[#c24d32] text-white font-bold rounded-xl shadow-[0_4px_12px_rgba(216,86,56,0.25)] text-[16px] active:scale-[0.98] transition-transform">
+                 SELL
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
