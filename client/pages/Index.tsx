@@ -41,17 +41,22 @@ const ResultCard = ({ symbol, change, title, description }: { symbol: string; ch
 );
 
 const allIndices = [
-  { id: 'nifty50', name: 'NIFTY 50', value: '22,819.00', change: '486', changePercent: '2.09', isNegative: true },
-  { id: 'niftybank', name: 'NIFTY BANK', value: '52,274.60', change: '1,433.50', changePercent: '2.67', isNegative: true },
-  { id: 'sensex', name: 'SENSEX', value: '73,583.22', change: '1,690.23', changePercent: '2.25', isNegative: true },
-  { id: 'bankex', name: 'BANKEX', value: '48,762.15', change: '425.50', changePercent: '0.88', isNegative: false },
-  { id: 'niftyit', name: 'NIFTY IT', value: '42,105.30', change: '852.40', changePercent: '1.98', isNegative: true },
-  { id: 'niftypharm', name: 'NIFTY PHARMA', value: '18,456.75', change: '267.80', changePercent: '1.47', isNegative: false },
-  { id: 'niftyinfra', name: 'NIFTY INFRA', value: '8,942.50', change: '123.45', changePercent: '1.36', isNegative: true },
-  { id: 'niftyenergyc', name: 'NIFTY ENERGY', value: '3,205.40', change: '89.20', changePercent: '2.86', isNegative: false },
-  { id: 'niftypse', name: 'NIFTY PSE', value: '5,834.60', change: '245.30', changePercent: '4.03', isNegative: true },
-  { id: 'niftyrealty', name: 'NIFTY REALTY', value: '892.30', change: '12.50', changePercent: '1.41', isNegative: false },
+  // Equity Indices
+  { id: 'nifty50',    name: 'NIFTY 50',   value: '22,819.00', change: '486.00',    changePercent: '2.09', isNegative: true  },
+  { id: 'niftybank',  name: 'NIFTY BANK', value: '52,274.60', change: '1,433.50',  changePercent: '2.67', isNegative: true  },
+  { id: 'sensex',     name: 'SENSEX',     value: '73,583.22', change: '1,690.23',  changePercent: '2.25', isNegative: true  },
+  { id: 'bankex',     name: 'BANKEX',     value: '48,762.15', change: '425.50',    changePercent: '0.88', isNegative: false },
+  { id: 'niftyit',   name: 'NIFTY IT',   value: '42,105.30', change: '852.40',    changePercent: '1.98', isNegative: true  },
+  { id: 'finnifty',  name: 'FINNIFTY',   value: '21,554.40', change: '120.25',    changePercent: '0.56', isNegative: false },
+  // Currencies
+  { id: 'inrusd',    name: 'INR / USD',  value: '84.29',     change: '0.18',      changePercent: '0.21', isNegative: true  },
+  { id: 'eurusd',    name: 'EUR / USD',  value: '1.0841',    change: '0.0023',    changePercent: '0.21', isNegative: false },
+  // Commodities
+  { id: 'gold',      name: 'GOLD',       value: '93,450',    change: '320',       changePercent: '0.34', isNegative: false },
+  { id: 'silver',    name: 'SILVER',     value: '96,800',    change: '1,120',     changePercent: '1.17', isNegative: false },
+  { id: 'crudeoil',  name: 'CRUDE OIL',  value: '6,842',     change: '85',        changePercent: '1.26', isNegative: true  },
 ];
+
 
 const newsData = [
   { id: 1, date: "Mar 28, 2026", title: "Market Rallies on Strong Banking Sector Performance", description: "Banking stocks showed resilience today with major indices gaining momentum. HDFC Bank and ICICI Bank led the gains amid positive quarterly results from sector leaders." },
