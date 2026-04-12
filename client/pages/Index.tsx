@@ -128,8 +128,8 @@ export default function Index() {
   // Searchable dataset
   const searchData = [
     ...allIndices.map(i => ({ type: 'index', label: i.name, sub: `${i.value} ${i.isNegative ? '▼' : '▲'} ${i.changePercent}%`, to: `/option-chain/${i.id}` })),
-    ...newsData.map(n => ({ type: 'news', label: n.title, sub: n.date, to: '/' })),
-    ...resultsData.map(r => ({ type: 'result', label: `${r.symbol} — ${r.title}`, sub: r.change, to: '/' })),
+    ...newsData.map(n => ({ type: 'news', label: n.title, sub: n.date, to: '/dashboard' })),
+    ...resultsData.map(r => ({ type: 'result', label: `${r.symbol} — ${r.title}`, sub: r.change, to: '/dashboard' })),
     { type: 'page', label: 'Portfolio', sub: 'View your holdings', to: '/portfolio' },
     { type: 'page', label: 'Strategy Builder', sub: 'Build options strategies', to: '/strategy' },
     { type: 'page', label: 'Paper Trade', sub: 'Simulated trading', to: '/paper-trade' },
