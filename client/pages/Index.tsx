@@ -326,14 +326,14 @@ export default function Index() {
                   {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
                 </p>
                 {searchResults.map((item, i) => (
-                  <button
+                  <Link
                     key={i}
+                    to={item.to}
                     onClick={() => { 
                       setSearchQuery(""); 
                       setSearchFocused(false); 
                       if (item.type === 'news') setActiveTab('news');
                       if (item.type === 'result') setActiveTab('results');
-                      navigate(item.to);
                     }}
                     className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors group text-left w-full"
                   >
@@ -345,7 +345,7 @@ export default function Index() {
                       <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-violet-400 transition-colors" />
-                  </button>
+                  </Link>
                 ))}
               </div>
             ) : (
