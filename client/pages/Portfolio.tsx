@@ -30,11 +30,11 @@ export default function Portfolio() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-white flex items-center px-4 py-3 flex-shrink-0 relative z-10 shadow-sm border-b border-gray-100">
-        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
-          <ArrowLeft className="w-5 h-5 text-gray-700" />
+      <div className="bg-violet-600 flex items-center px-4 py-3 flex-shrink-0 relative z-10 shadow-sm border-b border-violet-700">
+        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+          <ArrowLeft className="w-5 h-5 text-white" />
         </Link>
-        <h1 className="text-base font-bold text-gray-900 ml-2">Portfolio</h1>
+        <h1 className="text-base font-bold text-white ml-2">Portfolio</h1>
       </div>
 
       {/* Tabs */}

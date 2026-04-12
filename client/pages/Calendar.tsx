@@ -18,14 +18,14 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 flex-shrink-0 z-20">
+      <div className="bg-violet-600 border-b border-violet-700 flex-shrink-0 z-20">
         <div className="flex items-center gap-3 px-4 py-3">
-          <button onClick={() => navigate(-1)} className="p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
+          <button onClick={() => navigate(-1)} className="p-1.5 hover:bg-violet-700 rounded-lg transition-colors">
+            <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <div className="flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-violet-600" />
-            <h1 className="text-lg font-bold text-gray-900">Results & Events Calendar</h1>
+            <CalendarIcon className="w-5 h-5 text-white" />
+            <h1 className="text-lg font-bold text-white">Results & Events Calendar</h1>
           </div>
         </div>
       </div>

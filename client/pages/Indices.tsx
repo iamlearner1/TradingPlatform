@@ -116,13 +116,13 @@ export default function Indices() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 flex items-center px-4 py-3 flex-shrink-0 relative z-10 shadow-sm">
-        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
-          <ArrowLeft className="w-6 h-6 text-gray-900" />
+      <div className="bg-violet-600 border-b border-violet-700 flex items-center px-4 py-3 flex-shrink-0 relative z-10">
+        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+          <ArrowLeft className="w-6 h-6 text-white" />
         </Link>
         <div className="ml-2">
-          <h1 className="text-xl font-bold text-gray-900 leading-tight">Market Indices</h1>
-          <p className="text-[13px] text-gray-500">Track domestic and global markets</p>
+          <h1 className="text-xl font-bold text-white leading-tight">Market Indices</h1>
+          <p className="text-[13px] text-violet-200">Track domestic and global markets</p>
         </div>
       </div>
 

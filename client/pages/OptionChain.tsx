@@ -128,19 +128,19 @@ export default function OptionChain() {
       )}
 
       {/* Header */}
-      <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 flex-shrink-0">
+      <div className="flex justify-between items-center px-4 py-3 border-b border-violet-700 flex-shrink-0 bg-violet-600">
         <div className="flex items-center gap-3">
           <Link to="/" className="p-1 -ml-1">
-            <ArrowLeft className="w-6 h-6 text-gray-800" />
+            <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
           <div>
-            <h1 className="text-lg font-medium text-gray-900 leading-tight">{indexName}</h1>
-            <p className="text-[11px] text-gray-500 uppercase">NSE</p>
+            <h1 className="text-lg font-medium text-white leading-tight">{indexName}</h1>
+            <p className="text-[11px] text-violet-200 uppercase">NSE</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="text-lg font-medium text-gray-900 leading-tight">{spotPrice.toLocaleString('en-IN', {minimumFractionDigits: 2})}</p>
-          <p className="text-xs text-emerald-600 font-medium">+33.70 (0.15%)</p>
+          <p className="text-lg font-medium text-white leading-tight">{spotPrice.toLocaleString('en-IN', {minimumFractionDigits: 2})}</p>
+          <p className="text-xs text-emerald-300 font-medium">+33.70 (0.15%)</p>
         </div>
       </div>
 

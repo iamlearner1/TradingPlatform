@@ -84,13 +84,13 @@ export default function IPO() {
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 shrink-0 relative z-10">
-        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
-          <ArrowLeft className="w-5 h-5 text-gray-900" />
+      <div className="bg-violet-600 border-b border-violet-700 px-4 py-3 flex items-center gap-3 shrink-0 relative z-10">
+        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+          <ArrowLeft className="w-5 h-5 text-white" />
         </Link>
         <div>
-          <h1 className="text-[19px] font-bold text-gray-900 leading-tight">IPO Center</h1>
-          <p className="text-[13px] text-gray-500">Track and invest in IPOs</p>
+          <h1 className="text-[19px] font-bold text-white leading-tight">IPO Center</h1>
+          <p className="text-[13px] text-violet-200">Track and invest in IPOs</p>
         </div>
       </div>
 

@@ -230,25 +230,25 @@ export default function MutualFunds() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 flex items-center px-4 py-3 flex-shrink-0 relative z-10 shadow-sm">
+      <div className="bg-violet-600 border-b border-violet-700 flex items-center px-4 py-3 flex-shrink-0 relative z-10">
         {selectedCategory ? (
-          <button onClick={handleBack} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
-            <ArrowLeft className="w-6 h-6 text-gray-900" />
+          <button onClick={handleBack} className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+            <ArrowLeft className="w-6 h-6 text-white" />
           </button>
         ) : (
-          <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
-            <ArrowLeft className="w-6 h-6 text-gray-900" />
+          <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+            <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
         )}
         <div className="ml-2">
-          <h1 className="text-xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-xl font-bold text-white leading-tight">
             {selectedCategory && viewMode === "comparison" 
               ? (comparingFunds.length === 1 ? comparingFunds[0].name : "Comparing Funds")
               : selectedCategory 
                 ? `${selectedCategory} Cap Funds` 
                 : "Mutual Funds"}
           </h1>
-          <p className="text-[13px] text-gray-500">
+          <p className="text-[13px] text-violet-200">
             {selectedCategory && viewMode === "comparison"
               ? (comparingFunds.length === 1 ? "Fund Details" : `${comparingFunds.length} funds side-by-side`)
               : selectedCategory

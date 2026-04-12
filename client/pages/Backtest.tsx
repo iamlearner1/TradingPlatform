@@ -275,15 +275,15 @@ export default function Backtest() {
   return (
     <div className="h-screen flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl bg-[#f8f9fa]">
       {/* Top Header */}
-      <div className="bg-white flex items-center px-4 py-3 border-b border-gray-100 flex-shrink-0 justify-between">
+      <div className="bg-violet-600 flex items-center px-4 py-3 border-b border-violet-700 flex-shrink-0 justify-between">
         <div className="flex items-center gap-2">
            <Link to="/" className="p-1.5 -ml-1.5 rounded-full hover:bg-gray-100 transition-colors">
-             <ArrowLeft className="w-5 h-5 text-gray-700" />
+             <ArrowLeft className="w-5 h-5 text-white" />
            </Link>
-           <span className="text-[16px] font-bold text-gray-900 tracking-tight ml-1">Backtest Simulator</span>
+           <span className="text-[16px] font-bold text-white tracking-tight ml-1">Backtest Simulator</span>
         </div>
         <div className="flex items-center gap-3">
-          <Moon className="w-5 h-5 text-gray-600 cursor-pointer" />
+          <Moon className="w-5 h-5 text-white cursor-pointer" />
         </div>
       </div>
 
