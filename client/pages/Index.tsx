@@ -1,6 +1,6 @@
-import { ChevronDown, Bell, Search, X, Calendar } from "lucide-react";
+import { ChevronDown, Bell, Search, X, Calendar, Home, User, Settings, CreditCard, HelpCircle, LogOut, Shield, TrendingUp, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Category Icons
 const StocksIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2V17zm4 0h-2V7h2V17zm4 0h-2v-4h2V17z"/></svg>;
@@ -81,13 +81,16 @@ const resultsData = [
 ];
 
 export default function Index() {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<"news" | "results">("news");
   const [selectedIndices, setSelectedIndices] = useState(['nifty50', 'niftybank', 'sensex', 'bankex']);
   const [showIndicesDropdown, setShowIndicesDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const indicesDropdownRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -95,7 +98,6 @@ export default function Index() {
         setShowIndicesDropdown(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -105,6 +107,17 @@ export default function Index() {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close profile on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setShowProfile(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -128,12 +141,13 @@ export default function Index() {
     { type: 'page', label: 'Indices', sub: 'All market indices', to: '/indices' },
   ];
 
-  const searchResults = searchQuery.trim().length > 0
-    ? searchData.filter(item =>
-        item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.sub.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 8)
-    : [];
+  const searchResults = (() => {
+    const q = searchQuery.trim();
+    if (!q) return [];
+    let regex: RegExp;
+    try { regex = new RegExp(q, 'i'); } catch { return []; }
+    return searchData.filter(item => regex.test(item.label) || regex.test(item.sub)).slice(0, 8);
+  })();
 
   const typeColor: Record<string, string> = {
     index: 'bg-violet-100 text-violet-700',
@@ -160,15 +174,121 @@ export default function Index() {
 
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      {/* Profile Settings Overlay */}
+      {showProfile && (
+        <div className="fixed inset-0 z-[300] flex">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowProfile(false)} />
+          {/* Panel */}
+          <div ref={profileRef} className="relative ml-auto w-[88vw] max-w-sm h-full bg-white flex flex-col shadow-2xl animate-[slideInRight_0.2s_ease-out]">
+            {/* Profile Header */}
+            <div className="bg-gradient-to-br from-violet-600 to-violet-800 px-6 pt-12 pb-8">
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-white/70 text-sm font-semibold uppercase tracking-widest">Profile</span>
+                <button onClick={() => setShowProfile(false)} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                  <X className="w-4 h-4 text-white" />
+                </button>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center">
+                  <span className="text-2xl font-black text-white">SS</span>
+                </div>
+                <div>
+                  <h2 className="text-white font-black text-lg leading-tight">Sunny Shiva</h2>
+                  <p className="text-violet-200 text-sm font-medium">sunnyshiva@example.com</p>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                    <span className="text-[11px] text-emerald-300 font-bold uppercase tracking-wider">Pro Member</span>
+                  </div>
+                </div>
+              </div>
+              {/* Stats row */}
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                <div className="bg-white/10 rounded-xl p-3 text-center">
+                  <p className="text-white font-black text-base">₹2.4L</p>
+                  <p className="text-violet-200 text-[10px] font-semibold">Portfolio</p>
+                </div>
+                <div className="bg-white/10 rounded-xl p-3 text-center">
+                  <p className="text-emerald-300 font-black text-base">+18.4%</p>
+                  <p className="text-violet-200 text-[10px] font-semibold">Returns</p>
+                </div>
+                <div className="bg-white/10 rounded-xl p-3 text-center">
+                  <p className="text-white font-black text-base">34</p>
+                  <p className="text-violet-200 text-[10px] font-semibold">Trades</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Menu Items */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4">
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 px-1">Account</p>
+                <div className="flex flex-col gap-1">
+                  {[
+                    { icon: User, label: 'Personal Information', sub: 'Name, email, phone' },
+                    { icon: Shield, label: 'Security & Privacy', sub: '2FA, password, KYC' },
+                    { icon: CreditCard, label: 'Payment Methods', sub: 'UPI, bank accounts' },
+                    { icon: TrendingUp, label: 'Trading Preferences', sub: 'Risk level, defaults' },
+                  ].map(({ icon: Icon, label, sub }) => (
+                    <button key={label} className="flex items-center gap-4 w-full text-left px-3 py-3.5 rounded-xl hover:bg-gray-50 transition-colors group">
+                      <div className="w-9 h-9 bg-violet-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-violet-100 transition-colors">
+                        <Icon className="w-4.5 h-4.5 text-violet-600" size={18} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-gray-900">{label}</p>
+                        <p className="text-[11px] text-gray-400 font-medium">{sub}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                    </button>
+                  ))}
+                </div>
+
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 px-1 mt-6">Support</p>
+                <div className="flex flex-col gap-1">
+                  {[
+                    { icon: Settings, label: 'App Settings', sub: 'Notifications, theme' },
+                    { icon: HelpCircle, label: 'Help & Support', sub: 'FAQs, contact us' },
+                  ].map(({ icon: Icon, label, sub }) => (
+                    <button key={label} className="flex items-center gap-4 w-full text-left px-3 py-3.5 rounded-xl hover:bg-gray-50 transition-colors group">
+                      <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-gray-200 transition-colors">
+                        <Icon className="w-4.5 h-4.5 text-gray-600" size={18} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-gray-900">{label}</p>
+                        <p className="text-[11px] text-gray-400 font-medium">{sub}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Logout */}
+            <div className="p-4 border-t border-gray-100">
+              <button className="flex items-center gap-3 w-full px-4 py-3.5 bg-red-50 hover:bg-red-100 rounded-xl transition-colors group">
+                <div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-red-200 transition-colors">
+                  <LogOut className="w-4 h-4 text-red-600" />
+                </div>
+                <span className="text-sm font-bold text-red-600">Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white border-b border-gray-100 flex-shrink-0 z-20">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
+            <button
+              onClick={() => setShowProfile(true)}
+              className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center active:scale-95 transition-transform hover:bg-violet-700"
+            >
               <span className="text-white font-bold text-sm">UP</span>
-            </div>
+            </button>
           </div>
-          <div className="flex-1 mx-4 relative" ref={searchRef}>
+          <div className="flex-1 mx-4" ref={searchRef}>
             <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2">
               <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <input
@@ -185,37 +305,6 @@ export default function Index() {
                 </button>
               )}
             </div>
-
-            {/* Search Dropdown */}
-            {searchFocused && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] overflow-hidden">
-                <div className="py-1.5">
-                  {searchResults.map((item, i) => (
-                    <Link
-                      key={i}
-                      to={item.to}
-                      onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
-                    >
-                      <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded flex-shrink-0 ${typeColor[item.type]}`}>
-                        {typeLabel[item.type]}
-                      </span>
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-sm font-bold text-gray-900 truncate">{item.label}</span>
-                        <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* No results */}
-            {searchFocused && searchQuery.trim().length > 0 && searchResults.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-4 text-center">
-                <p className="text-sm text-gray-500 font-medium">No results for "{searchQuery}"</p>
-              </div>
-            )}
           </div>
           <button className="p-2">
             <Bell className="w-5 h-5 text-gray-700" />
@@ -223,7 +312,45 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Market Indices with Dropdown */}
+      {/* Search Results Panel — shown below header, above all other content */}
+      {searchFocused && searchQuery.trim().length > 0 && (
+        <div className="flex-1 bg-white overflow-y-auto z-10">
+          {searchResults.length > 0 ? (
+            <div className="divide-y divide-gray-50">
+              <p className="px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
+              </p>
+              {searchResults.map((item, i) => (
+                <Link
+                  key={i}
+                  to={item.to}
+                  onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
+                  className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors"
+                >
+                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded flex-shrink-0 ${typeColor[item.type]}`}>
+                    {typeLabel[item.type]}
+                  </span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-bold text-gray-900 truncate">{item.label}</span>
+                    <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 px-8">
+              <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                <Search className="w-6 h-6 text-gray-400" />
+              </div>
+              <p className="text-base font-bold text-gray-700 mb-1">No results found</p>
+              <p className="text-sm text-gray-400 text-center">Try searching for indices, stocks, news or pages</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Market Indices with Dropdown — hidden when searching */}
+      {!(searchFocused && searchQuery.trim().length > 0) && <>
       <div className="p-4 bg-white border-b border-gray-100 relative flex-shrink-0 shadow-sm z-30" ref={indicesDropdownRef}>
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-sm font-bold text-gray-900">Market Indices</h2>
@@ -347,19 +474,27 @@ export default function Index() {
         )}
       </div>
 
+      </>
+      }
+
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-        <Link to="/portfolio" className="flex flex-col items-center justify-center gap-1 text-violet-600 font-medium w-full h-full py-2 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
+        <Link
+          to="/"
+          className={`flex flex-col items-center justify-center gap-1 font-medium w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1 ${
+            location.pathname === '/' ? 'text-violet-600' : 'text-gray-500 hover:text-violet-600'
+          }`}
+        >
+          <Home className="w-5 h-5" strokeWidth={location.pathname === '/' ? 2.5 : 1.75} />
+          <span className="text-[10px]">Home</span>
+        </Link>
+        <Link to="/portfolio" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.04-2.71c-.2-.28-.57-.42-.9-.35-.33.05-.6.31-.66.63l-1.17 6.3h11.01L15.5 6.5c-.05-.32-.31-.58-.64-.63-.33-.07-.7.07-.9.35z"/></svg>
           <span className="text-[10px]">Portfolio</span>
         </Link>
         <Link to="/strategy" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
           <span className="text-[10px]">Strategy</span>
-        </Link>
-        <Link to="/paper-trade" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>
-          <span className="text-[10px]">Paper Trade</span>
         </Link>
         <Link to="/backtest" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-8h2v16H7zm4-2h2v18h-2zm4-2h2v20h-2zm4 4h2v16h-2z"/></svg>
