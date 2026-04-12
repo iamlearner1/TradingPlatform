@@ -236,7 +236,7 @@ export default function MutualFunds() {
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
         ) : (
-          <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+          <Link to="/dashboard" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
             <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
         )}

@@ -121,7 +121,7 @@ export default function Stocks() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl">
       <div className="bg-violet-600 border-b border-violet-700 flex items-center px-4 py-3 flex-shrink-0 relative z-10">
-        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
+        <Link to="/dashboard" className="p-2 -ml-2 rounded-full hover:bg-violet-700 transition-colors">
           <ArrowLeft className="w-6 h-6 text-white" />
         </Link>
         <div className="ml-2">

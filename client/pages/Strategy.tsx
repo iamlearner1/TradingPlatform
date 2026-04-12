@@ -37,7 +37,7 @@ export default function Strategy() {
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex flex-col pb-20">
       <div className="bg-[#312579] border-b flex items-center px-4 py-3 flex-shrink-0 relative z-10 shadow-sm text-white">
-        <Link to="/" className="p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors">
+        <Link to="/dashboard" className="p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors">
           <ArrowLeft className="w-5 h-5 text-white" />
         </Link>
         <div className="ml-2">

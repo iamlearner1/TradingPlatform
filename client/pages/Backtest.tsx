@@ -277,7 +277,7 @@ export default function Backtest() {
       {/* Top Header */}
       <div className="bg-violet-600 flex items-center px-4 py-3 border-b border-violet-700 flex-shrink-0 justify-between">
         <div className="flex items-center gap-2">
-           <Link to="/" className="p-1.5 -ml-1.5 rounded-full hover:bg-gray-100 transition-colors">
+           <Link to="/dashboard" className="p-1.5 -ml-1.5 rounded-full hover:bg-gray-100 transition-colors">
              <ArrowLeft className="w-5 h-5 text-white" />
            </Link>
            <span className="text-[16px] font-bold text-white tracking-tight ml-1">Backtest Simulator</span>

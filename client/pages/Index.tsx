@@ -312,45 +312,49 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Search Results Panel — shown below header, above all other content */}
+      {/* Search Results Panel — Overlaying content */}
       {searchFocused && searchQuery.trim().length > 0 && (
-        <div className="flex-1 bg-white overflow-y-auto z-10">
-          {searchResults.length > 0 ? (
-            <div className="divide-y divide-gray-50">
-              <p className="px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
-              </p>
-              {searchResults.map((item, i) => (
-                <Link
-                  key={i}
-                  to={item.to}
-                  onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
-                  className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors"
-                >
-                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded flex-shrink-0 ${typeColor[item.type]}`}>
-                    {typeLabel[item.type]}
-                  </span>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-bold text-gray-900 truncate">{item.label}</span>
-                    <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-16 px-8">
-              <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                <Search className="w-6 h-6 text-gray-400" />
+        <div className="absolute top-[64px] left-4 right-4 max-h-[70vh] bg-white rounded-3xl shadow-2xl z-50 overflow-hidden border border-gray-100 flex flex-col animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="overflow-y-auto">
+            {searchResults.length > 0 ? (
+              <div className="divide-y divide-gray-50">
+                <p className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-50/50">
+                  {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
+                </p>
+                {searchResults.map((item, i) => (
+                  <Link
+                    key={i}
+                    to={item.to}
+                    onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
+                    className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors group"
+                  >
+                    <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded flex-shrink-0 ${typeColor[item.type]}`}>
+                      {typeLabel[item.type]}
+                    </span>
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="text-sm font-bold text-gray-900 group-hover:text-violet-600 transition-colors truncate">{item.label}</span>
+                      <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-violet-400 transition-colors" />
+                  </Link>
+                ))}
               </div>
-              <p className="text-base font-bold text-gray-700 mb-1">No results found</p>
-              <p className="text-sm text-gray-400 text-center">Try searching for indices, stocks, news or pages</p>
-            </div>
-          )}
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 px-8 bg-white">
+                <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-4">
+                  <Search className="w-8 h-8 text-gray-200" />
+                </div>
+                <p className="text-base font-bold text-gray-700 mb-1">No results found</p>
+                <p className="text-sm text-gray-400 text-center">Try a different search term</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Market Indices with Dropdown — hidden when searching */}
-      {!(searchFocused && searchQuery.trim().length > 0) && <>
+      {/* Main Content Area */}
+      <div className={`flex-1 flex flex-col overflow-y-auto transition-all duration-300 ${searchFocused && searchQuery.trim().length > 0 ? 'opacity-40 pointer-events-none' : ''}`}>
+
       <div className="p-4 bg-white border-b border-gray-100 relative flex-shrink-0 shadow-sm z-30" ref={indicesDropdownRef}>
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-sm font-bold text-gray-900">Market Indices</h2>
@@ -473,19 +477,17 @@ export default function Index() {
           </div>
         )}
       </div>
+    </div>
 
-      </>
-      }
-
-      {/* Bottom Navigation */}
+    {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 flex-shrink-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <Link
-          to="/"
+          to="/dashboard"
           className={`flex flex-col items-center justify-center gap-1 font-medium w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1 ${
-            location.pathname === '/' ? 'text-violet-600' : 'text-gray-500 hover:text-violet-600'
+            location.pathname === '/dashboard' ? 'text-violet-600' : 'text-gray-500 hover:text-violet-600'
           }`}
         >
-          <Home className="w-5 h-5" strokeWidth={location.pathname === '/' ? 2.5 : 1.75} />
+          <Home className="w-5 h-5" strokeWidth={location.pathname === '/dashboard' ? 2.5 : 1.75} />
           <span className="text-[10px]">Home</span>
         </Link>
         <Link to="/portfolio" className="flex flex-col items-center justify-center gap-1 text-gray-500 font-medium hover:text-violet-600 w-full h-full py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg mx-1">

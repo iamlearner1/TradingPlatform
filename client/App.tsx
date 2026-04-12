@@ -21,6 +21,9 @@ import Backtest from "./pages/Backtest";
 import OptionChain from "./pages/OptionChain";
 import StrategyBuilder from "./pages/StrategyBuilder";
 import CalendarPage from "./pages/Calendar";
+import Splash from "./pages/Splash";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +34,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Index />} />
           <Route path="/stocks" element={<Stocks />} />
           <Route path="/stock/:ticker" element={<StockDetails />} />
           <Route path="/ipo" element={<IPO />} />

@@ -130,7 +130,7 @@ export default function OptionChain() {
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-3 border-b border-violet-700 flex-shrink-0 bg-violet-600">
         <div className="flex items-center gap-3">
-          <Link to="/" className="p-1 -ml-1">
+          <Link to="/dashboard" className="p-1 -ml-1">
             <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
           <div>
