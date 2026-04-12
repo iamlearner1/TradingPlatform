@@ -38,7 +38,6 @@ export default function OptionChain() {
   const spotPrice = 22713.10;
   
   const [activeTab, setActiveTab] = useState("Option chain");
-  const [selectedContract, setSelectedContract] = useState<{strike: number, type: 'CE'|'PE'} | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   
   // Strategy Mode State
@@ -79,7 +78,7 @@ export default function OptionChain() {
   };
 
   const thStyle: React.CSSProperties = { padding: '10px 4px', fontSize: '12px', color: '#6b7280', fontWeight: '500', textAlign: 'center', borderBottom: '1px solid #f3f4f6' };
-  const tdStyle: React.CSSProperties = { padding: '10px 4px', textAlign: 'center', borderBottom: '1px solid #f3f4f6', verticalAlign: 'top' };
+  const tdStyle: React.CSSProperties = { padding: '6px 4px', textAlign: 'center', borderBottom: '1px solid #f3f4f6', verticalAlign: 'middle' };
 
   // Calculate dynamic margins
   const availableBalance = 53042.78;
@@ -103,18 +102,19 @@ export default function OptionChain() {
   const handleActionClick = () => {
     if (strategyLegs.length === 0) return;
     
-    if (shortfall > 0) {
-      setToast('Mock: Redirecting to payment gateway to add funds...');
-      setTimeout(() => setToast(null), 3000);
-    } else {
-      setToast('Strategy Executed Successfully!');
-      setTimeout(() => {
-        setToast(null);
-        setStrategyLegs([]);
-        setIsStrategyMode(false);
-        navigate('/portfolio?tab=paperPortfolio', { state: { executedStrategy: strategyLegs } });
-      }, 1500);
-    }
+    setToast('Strategy Executed Successfully!');
+    const executedStrategyWithDetails = strategyLegs.map(leg => {
+      const row = strikes.find(s => s.strike === leg.strike);
+      const ltp = row ? parseFloat(leg.type === 'CE' ? row.ce.ltp : row.pe.ltp) : 0;
+      return { ...leg, ltp };
+    });
+
+    setTimeout(() => {
+      setToast(null);
+      setStrategyLegs([]);
+      setIsStrategyMode(false);
+      navigate('/portfolio?tab=paperPortfolio', { state: { executedStrategy: executedStrategyWithDetails } });
+    }, 1500);
   };
   if (symbol && symbol.toLowerCase() !== 'nifty50') {
     return (
@@ -257,16 +257,16 @@ export default function OptionChain() {
                       </td>
                     </tr>
                   )}
-                  <tr className="active:bg-gray-50 border-b border-gray-100" onClick={() => !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}>
+                  <tr className="active:bg-gray-50 border-b border-gray-100">
                     
                     {/* Call Side */}
-                    <td colSpan={2} style={{...tdStyle, padding: '10px 2px'}} className={`${row.strike < spotPrice ? 'bg-[#fffbf0]' : ''}`}>
-                       <div className="grid grid-cols-2 gap-0 mb-2">
-                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
+                    <td colSpan={2} style={{...tdStyle, padding: '6px 2px'}} className={`${row.strike < spotPrice ? 'bg-[#fffbf0]' : ''}`}>
+                       <div className={`grid grid-cols-2 gap-0 ${isStrategyMode ? 'mb-2' : ''}`}>
+                          <div className="text-center flex flex-col items-center justify-center">
                             <div className="text-emerald-700 font-medium text-[13px]">{row.ce.oi}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.oiPos ? '+' : '-'}{row.ce.oiChg}</div>
                           </div>
-                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'CE'})}}>
+                          <div className="text-center flex flex-col items-center justify-center">
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.ce.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.ce.ltpChg}</div>
                           </div>
@@ -302,20 +302,20 @@ export default function OptionChain() {
                     
                     {/* Strike Center Column */}
                     <td style={{...tdStyle, backgroundColor: '#f9fafb'}} className="border-l border-r border-[#f3f4f6] align-middle">
-                      <div className="flex flex-col justify-center h-full min-h-[4rem]">
+                      <div className="flex flex-col justify-center py-1">
                         <div className="text-gray-900 font-bold text-[14px]">{row.strike}</div>
                         <div className="text-[11px] text-gray-500 mt-0.5">PCR: {row.pcr}</div>
                       </div>
                     </td>
 
                     {/* Put Side */}
-                    <td colSpan={2} style={{...tdStyle, padding: '10px 2px'}} className={`${row.strike > spotPrice ? 'bg-[#fffbf0]' : ''}`}>
-                       <div className="grid grid-cols-2 gap-0 mb-2">
-                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
+                    <td colSpan={2} style={{...tdStyle, padding: '6px 2px'}} className={`${row.strike > spotPrice ? 'bg-[#fffbf0]' : ''}`}>
+                       <div className={`grid grid-cols-2 gap-0 ${isStrategyMode ? 'mb-2' : ''}`}>
+                          <div className="text-center flex flex-col items-center justify-center">
                             <div className="text-[#c2410c] font-medium text-[13px]">{row.pe.ltp}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.pe.ltpChg}</div>
                           </div>
-                          <div className="text-center cursor-pointer flex flex-col items-center justify-center" onClick={(e) => { !isStrategyMode && e.stopPropagation(); !isStrategyMode && setSelectedContract({strike: row.strike, type: 'PE'})}}>
+                          <div className="text-center flex flex-col items-center justify-center">
                             <div className="text-emerald-700 font-medium text-[13px]">{row.pe.oi}</div>
                             <div className="text-[10px] text-gray-500 mt-0.5">{row.pe.oiPos ? '+' : '-'}{row.pe.oiChg}</div>
                           </div>
@@ -424,16 +424,10 @@ export default function OptionChain() {
                   className={`flex-1 font-bold rounded-lg shadow-md transition-all text-[15px] ${
                     strategyLegs.length === 0 
                       ? 'bg-gray-200 text-gray-400' 
-                      : shortfall > 0 
-                        ? 'bg-[#4c1d95] hover:bg-purple-800 text-white active:scale-[0.99]' 
-                        : 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-[0.99]'
+                      : 'bg-[#4c1d95] hover:bg-purple-800 text-white active:scale-[0.99]' 
                   }`}
                 >
-                   {shortfall > 0 
-                     ? `Add ₹${shortfall.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} to continue` 
-                     : strategyLegs.length > 0 
-                       ? 'Execute Strategy' 
-                       : 'Select contracts'}
+                   {strategyLegs.length > 0 ? 'Execute Paper Trade' : 'Select contracts'}
                 </button>
              </div>
              {strategyLegs.length > 0 && (
@@ -445,119 +439,7 @@ export default function OptionChain() {
         </div>
       )}
 
-      {/* Buy/Sell Bottom Sheet Modal (Only active if Strategy Mode is OFF) */}
-      {!isStrategyMode && selectedContract && (
-        <>
-          <div className="fixed inset-0 bg-black/60 z-40 transition-opacity" onClick={() => setSelectedContract(null)}></div>
-          <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 shadow-2xl animate-in slide-in-from-bottom duration-300 flex flex-col" style={{ height: '85vh' }}>
-            {/* Modal Header */}
-            <div className="flex justify-between items-start p-4 pb-2 flex-shrink-0">
-              <div className="flex flex-col items-center mx-auto absolute left-0 right-0 -top-3">
-                 <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
-              </div>
-              <div className="mt-2">
-                <h3 className="text-[15px] font-medium text-[#4c1d95] leading-tight inline-block border-b border-[#4c1d95] pb-0.5">
-                  NIFTY {selectedContract.strike} {selectedContract.type}
-                </h3>
-                <p className="text-[11px] text-gray-500 uppercase mt-1">NFO 07 APR 26</p>
-              </div>
-              <div className="flex gap-4 mt-2">
-                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                <PlusCircle className="w-5 h-5 text-gray-700" />
-              </div>
-            </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto">
-              {/* Chart Placeholder Area */}
-              <div className="flex flex-col items-center justify-center py-6 text-gray-400">
-                <Activity className="w-8 h-8 mb-2 opacity-50" />
-                <p className="text-[13px]">No data available for this period.</p>
-                <p className="text-[13px]">Try a different time range.</p>
-              </div>
-
-              {/* Timeframe Toggles */}
-              <div className="flex justify-center gap-2 px-4 mb-4">
-                {['5m', '15m', '30m', '1H', '1D'].map((t, idx) => (
-                  <button key={t} className={`px-2.5 py-1 rounded text-xs font-medium border ${idx === 0 ? 'border-purple-800 text-purple-900 bg-purple-50' : 'border-gray-200 text-gray-600'}`}>{t}</button>
-                ))}
-                <button className="p-1 px-1.5 rounded border border-gray-200 text-purple-800"><Activity className="w-4 h-4" /></button>
-                <button className="p-1 px-1.5 rounded border border-gray-200 text-purple-800"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg></button>
-              </div>
-
-              {/* Scalper / Chart 360 */}
-              <div className="flex border-t border-b border-gray-100 py-3 mb-2 bg-gray-50/50">
-                <div className="flex-1 flex justify-center items-center gap-2 text-sm font-bold text-violet-800 border-r border-gray-200">
-                  <div className="bg-violet-800 text-white rounded p-0.5"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
-                  Scalper
-                </div>
-                <div className="flex-1 flex justify-center items-center gap-2 text-sm font-bold text-violet-800">
-                  Chart 360
-                </div>
-              </div>
-
-              {/* Data Tabs */}
-              <div className="flex border-b border-gray-200 px-4 gap-6 text-sm font-medium text-gray-500 mb-4">
-                <button className="pb-2 text-gray-900 border-b-2 border-gray-900">Stats</button>
-                <button className="pb-2">Depth</button>
-                <button className="pb-2">Orders</button>
-                <button className="pb-2">Positions</button>
-              </div>
-
-              {/* Stats Content */}
-              <div className="px-4 pb-24">
-                <div className="grid grid-cols-4 gap-2 border-b border-gray-100 pb-4 mb-4">
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Open</p>
-                    <p className="text-xs font-semibold text-gray-800">98.00</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">High</p>
-                    <p className="text-xs font-semibold text-gray-800">193.65</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Low</p>
-                    <p className="text-xs font-semibold text-gray-800">61.10</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Prev. close</p>
-                    <p className="text-xs font-semibold text-gray-800">221.75</p>
-                  </div>
-                </div>
-
-                <div className="flex">
-                  {/* Left Column Data */}
-                  <div className="flex-1 border-r border-gray-100 pr-4">
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">LTP</span><span className="font-semibold">170.00</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Ch. in LTP (%)</span><span className="font-semibold">-23.34%</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">OI</span><span className="font-semibold">19,66,770</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Ch. in OI (%)</span><span className="font-semibold text-gray-800">-8.27%</span></div>
-                    <div className="flex justify-between text-xs"><span className="text-gray-500">Implied Vol.</span><span className="font-semibold">23.48</span></div>
-                  </div>
-                  {/* Right Column Greeks */}
-                  <div className="flex-1 pl-4">
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Delta</span><span className="font-semibold">0.3901</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Gamma</span><span className="font-semibold">0.0006</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Theta</span><span className="font-semibold">-23.9573</span></div>
-                    <div className="flex justify-between mb-3 text-xs"><span className="text-gray-500">Vega</span><span className="font-semibold">10.2019</span></div>
-                    <div className="flex justify-between text-xs"><span className="text-gray-500">Rho</span><span className="font-semibold">1.1908</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Actions Fixed */}
-            <div className="bg-white border-t border-gray-200 px-4 py-3 flex gap-4 flex-shrink-0">
-              <button className="flex-1 bg-[#107c5a] text-white font-medium py-3 rounded text-sm hover:bg-emerald-700 transition">
-                Buy
-              </button>
-              <button className="flex-1 bg-[#d85638] text-white font-medium py-3 rounded text-sm hover:bg-red-700 transition">
-                Sell
-              </button>
-            </div>
-          </div>
-        </>
-      )}
       </>
       ) : activeTab === "Charts" ? (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50/50">
