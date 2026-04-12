@@ -37,7 +37,6 @@ export default function OptionChain() {
   const indexName = symbol?.replace('nifty', 'Nifty ')?.replace('bank', 'Bank')?.replace(/^./, str => str.toUpperCase()) || "Nifty 50";
   const spotPrice = 22713.10;
   
-  const [activeTab, setActiveTab] = useState("Option chain");
   const [toast, setToast] = useState<string | null>(null);
   
   // Strategy Mode State
@@ -117,31 +116,7 @@ export default function OptionChain() {
       navigate('/portfolio?tab=paperPortfolio', { state: { executedStrategy: executedStrategyWithDetails } });
     }, 1500);
   };
-  if (symbol && symbol.toLowerCase() !== 'nifty50') {
-    return (
-       <div className="h-screen bg-white flex flex-col overflow-hidden text-gray-800 font-sans relative">
-         <div className="flex items-center px-4 py-3 border-b border-gray-100 flex-shrink-0 gap-3">
-          <Link to="/" className="p-1 -ml-1">
-            <ArrowLeft className="w-6 h-6 text-gray-800" />
-          </Link>
-          <div>
-            <h1 className="text-lg font-medium text-gray-900 leading-tight">{indexName}</h1>
-            <p className="text-[11px] text-gray-500 uppercase">NSE</p>
-          </div>
-         </div>
-         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-20 h-20 bg-violet-50 rounded-full flex items-center justify-center mb-4">
-              <Activity className="w-10 h-10 text-violet-600 opacity-80" />
-            </div>
-            <h2 className="text-lg font-bold text-gray-900 mb-2">Option Chain Unavailable</h2>
-            <p className="text-sm text-gray-500 mb-6">Live option chain data and strategy builder are currently only active for Nifty 50 in this demonstration environment.</p>
-            <Link to="/option-chain/nifty50" className="px-5 py-2.5 bg-[#4c1d95] text-white font-bold rounded shadow-md hover:bg-purple-800 transition text-[14px]">
-               View Nifty 50 Option Chain
-            </Link>
-         </div>
-       </div>
-    );
-  }
+
 
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden text-gray-800 font-sans relative">
@@ -169,24 +144,9 @@ export default function OptionChain() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex overflow-x-auto scrollbar-hide border-b border-gray-200 flex-shrink-0">
-        {["Summary", "Charts", "Option chain", "Future chain"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors border-b-2 ${
-              activeTab === tab ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
 
-      {/* Main Content Area */}
-      {activeTab === "Option chain" ? (
-        <>
+
+
           {/* Filters Bar */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 flex-shrink-0 bg-white shadow-sm z-10 transition-all">
         <div className="flex gap-4">
@@ -447,25 +407,6 @@ export default function OptionChain() {
       )}
 
 
-      </>
-      ) : activeTab === "Charts" ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50/50">
-           <Activity className="w-12 h-12 text-gray-300 mb-4 opacity-50" />
-           <p className="text-gray-500 font-medium">Advanced trading charts are currently disabled.</p>
-        </div>
-      ) : activeTab === "Summary" ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50/50">
-           <Activity className="w-12 h-12 text-gray-300 mb-4 opacity-50" />
-           <p className="text-gray-500 font-medium">Index summary data is currently updating.</p>
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50/50">
-           <Activity className="w-12 h-12 text-gray-300 mb-4 opacity-50" />
-           <p className="text-gray-500 font-medium">Future chain data is not active.</p>
-        </div>
-      )}
-
-      {/* Direct Buy/Sell Modal */}
       {selectedDirectLeg && (
         <div className="fixed inset-0 bg-black/50 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
           <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl animate-in slide-in-from-bottom-8">

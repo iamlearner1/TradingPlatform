@@ -79,7 +79,10 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState<"news" | "results">("news");
   const [selectedIndices, setSelectedIndices] = useState(['nifty50', 'niftybank', 'sensex', 'bankex']);
   const [showIndicesDropdown, setShowIndicesDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
   const indicesDropdownRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,6 +94,51 @@ export default function Index() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Close search on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Searchable dataset
+  const searchData = [
+    ...allIndices.map(i => ({ type: 'index', label: i.name, sub: `${i.value} ${i.isNegative ? '▼' : '▲'} ${i.changePercent}%`, to: `/option-chain/${i.id}` })),
+    ...newsData.map(n => ({ type: 'news', label: n.title, sub: n.date, to: '/' })),
+    ...resultsData.map(r => ({ type: 'result', label: `${r.symbol} — ${r.title}`, sub: r.change, to: '/' })),
+    { type: 'page', label: 'Portfolio', sub: 'View your holdings', to: '/portfolio' },
+    { type: 'page', label: 'Strategy Builder', sub: 'Build options strategies', to: '/strategy' },
+    { type: 'page', label: 'Paper Trade', sub: 'Simulated trading', to: '/paper-trade' },
+    { type: 'page', label: 'Backtest', sub: 'Simulate historical strategies', to: '/backtest' },
+    { type: 'page', label: 'Results Calendar', sub: 'Upcoming earnings & events', to: '/calendar' },
+    { type: 'page', label: 'Stocks', sub: 'Browse all stocks', to: '/stocks' },
+    { type: 'page', label: 'IPO', sub: 'Upcoming IPOs', to: '/ipo' },
+    { type: 'page', label: 'Mutual Funds', sub: 'Browse mutual funds', to: '/mutual-funds' },
+    { type: 'page', label: 'ETF', sub: 'Exchange Traded Funds', to: '/etf' },
+    { type: 'page', label: 'Indices', sub: 'All market indices', to: '/indices' },
+  ];
+
+  const searchResults = searchQuery.trim().length > 0
+    ? searchData.filter(item =>
+        item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.sub.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 8)
+    : [];
+
+  const typeColor: Record<string, string> = {
+    index: 'bg-violet-100 text-violet-700',
+    news: 'bg-blue-50 text-blue-600',
+    result: 'bg-emerald-50 text-emerald-700',
+    page: 'bg-gray-100 text-gray-600',
+  };
+  const typeLabel: Record<string, string> = {
+    index: 'Index', news: 'News', result: 'Result', page: 'Page',
+  };
 
   const toggleIndex = (indexId: string) => {
     if (selectedIndices.includes(indexId)) {
@@ -115,15 +163,54 @@ export default function Index() {
               <span className="text-white font-bold text-sm">UP</span>
             </div>
           </div>
-          <div className="flex-1 mx-4">
+          <div className="flex-1 mx-4 relative" ref={searchRef}>
             <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2">
-              <Search className="w-4 h-4 text-gray-400" />
+              <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <input
                 type="text"
-                placeholder="Search for Indices"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)}
+                placeholder="Search indices, stocks, news..."
                 className="bg-transparent text-sm outline-none flex-1 placeholder-gray-400"
               />
+              {searchQuery && (
+                <button onClick={() => { setSearchQuery(""); setSearchFocused(false); }} className="flex-shrink-0">
+                  <X className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                </button>
+              )}
             </div>
+
+            {/* Search Dropdown */}
+            {searchFocused && searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] overflow-hidden">
+                <div className="py-1.5">
+                  {searchResults.map((item, i) => (
+                    <Link
+                      key={i}
+                      to={item.to}
+                      onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded flex-shrink-0 ${typeColor[item.type]}`}>
+                        {typeLabel[item.type]}
+                      </span>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-bold text-gray-900 truncate">{item.label}</span>
+                        <span className="text-[11px] text-gray-400 truncate">{item.sub}</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No results */}
+            {searchFocused && searchQuery.trim().length > 0 && searchResults.length === 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-4 text-center">
+                <p className="text-sm text-gray-500 font-medium">No results for "{searchQuery}"</p>
+              </div>
+            )}
           </div>
           <button className="p-2">
             <Bell className="w-5 h-5 text-gray-700" />

@@ -63,7 +63,7 @@ export default function Strategy() {
             return (
               <div 
                 key={item.symbol}
-                onClick={() => navigate('/backtest')}
+                onClick={() => navigate('/strategy-builder')}
                 className="bg-white border border-gray-200/60 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer flex justify-between items-center group relative overflow-hidden"
               >
                 <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: isPositive ? '#10b981' : '#ef4444' }}></div>
