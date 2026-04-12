@@ -1,6 +1,6 @@
 import { ChevronDown, Bell, Search, X, Calendar, Home, User, Settings, CreditCard, HelpCircle, LogOut, Shield, TrendingUp, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // Category Icons
 const StocksIcon = () => <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2V17zm4 0h-2V7h2V17zm4 0h-2v-4h2V17z"/></svg>;
@@ -82,6 +82,7 @@ const resultsData = [
 
 export default function Index() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"news" | "results">("news");
   const [selectedIndices, setSelectedIndices] = useState(['nifty50', 'niftybank', 'sensex', 'bankex']);
   const [showIndicesDropdown, setShowIndicesDropdown] = useState(false);
