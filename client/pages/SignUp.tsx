@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Phone, User, ArrowRight, Apple, Github, ChevronLeft } from "lucide-react";
 
-const Register = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState<"phone" | "otp">("phone");
   const [phone, setPhone] = useState("");
@@ -160,4 +160,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;

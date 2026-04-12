@@ -21,7 +21,7 @@ import Backtest from "./pages/Backtest";
 import OptionChain from "./pages/OptionChain";
 import StrategyBuilder from "./pages/StrategyBuilder";
 import CalendarPage from "./pages/Calendar";
-import Register from "./pages/Register";
+import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Splash from "./pages/Splash";
 
@@ -36,7 +36,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<SignUp />} />
           <Route path="/dashboard" element={<Index />} />
           <Route path="/stocks" element={<Stocks />} />
           <Route path="/stock/:ticker" element={<StockDetails />} />
